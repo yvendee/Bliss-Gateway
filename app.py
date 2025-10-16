@@ -174,6 +174,19 @@ def about_page():
     return render_template("about.html")
 
 
+@app.route("/admin-dashboard")
+def admin_dashboard_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin-dashboard.html")
+
+
+@app.route("/client-notif")
+def client_notif_page():
+    # Render the HTML template for the /ui route
+    return render_template("client_notif.html")
+
+
+
 @app.route('/api/logout')
 def logout():
     session.clear()
