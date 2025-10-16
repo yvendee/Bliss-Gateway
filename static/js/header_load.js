@@ -50,11 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         // Redirect admins to dashboard, clients to profile
                         if (data.userRole && data.userRole.toLowerCase() === "admin") {
                             loginBtn.onclick = () => {
-                                window.location.href = "/BlissGateways/admin/admin_dashboard.html";
+                                window.location.href = "/admin-dashboard";
                             };
                         } else {
                             loginBtn.onclick = () => {
-                                window.location.href = "/BlissGateways/client/client_notif.html";
+                                window.location.href = "/client-notif";
                             };
                         }
                     }
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (loginBtn) {
                         loginBtn.textContent = "Login";
                         loginBtn.onclick = () => {
-                            window.location.href = "/BlissGateways/auth/login.html";
+                            window.location.href = "/login";
                         };
                     }
                 }

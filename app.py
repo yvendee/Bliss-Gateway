@@ -183,7 +183,19 @@ def admin_dashboard_page():
 @app.route("/client-notif")
 def client_notif_page():
     # Render the HTML template for the /ui route
-    return render_template("client_notif.html")
+    return render_template("client/client_notif.html")
+
+
+@app.route("/login")
+def login_page():
+    # Render the HTML template for the /ui route
+    return render_template("auth/login.html")
+
+@app.route("/forgot-password")
+def forgot_password_page():
+    # Render the HTML template for the /ui route
+    return render_template("auth/forgot_password.html")
+
 
 
 

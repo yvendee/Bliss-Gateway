@@ -1,0 +1,226 @@
+.login-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url('http://localhost/BlissGateways/assets/images/beach.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.login-box {
+  background-color: #fff;
+  padding: 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #008EC4;
+}
+
+.login-box p {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #008EC4;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 22px;               
+  top: 70%;                 
+  transform: translateY(-50%);
+  width: 14px;              
+  height: 14px;             
+  opacity: 0.7;
+}
+
+.login-password-wrapper .login-toggle-password {
+  position: absolute;
+  right: 21px;
+  top: 79%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.login-password-wrapper .login-toggle-password img {
+  width: 19px;
+  height: 19px;
+  opacity: 0.75;
+  margin-top: 10px;
+  transition: opacity 0.2s ease;
+}
+
+.login-password-wrapper .login-toggle-password img:hover {
+  opacity: 1;
+}
+
+.forgot-password {
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.forgot-password a {
+  color: #0077b6;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 8px;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0 10px;
+}
+
+.login-box button:hover {
+  background-color: #005f8e;
+}
+
+.signup-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.signup-link a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Reset password toggle eye */
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 21px;
+  top: 74%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.password-wrapper .toggle-password img {
+  width: 19px;
+  height: 19px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.password-wrapper .toggle-password img:hover {
+  opacity: 1;
+}
+
+.password-match {
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+.password-match.success {
+  color: green;
+}
+
+.password-match.error {
+  color: red;
+}
+
+/* Wrapper to keep eye icon inside input */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* room for eye icon */
+}
+
+/* Eye icon (centered vertically) */
+.password-wrapper .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.password-wrapper .toggle-password img {
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.password-wrapper .toggle-password img:hover {
+  opacity: 1;
+}
+
+/* Password hints below inputs */
+.password-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #666;
+}
+
+.password-hint.success {
+  color: green;
+}
+
+.password-hint.error {
+  color: red;
+}

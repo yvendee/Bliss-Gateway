@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
       accountBtn.textContent = "My Account";
       accountBtn.className = "btnLogin-popup btnMyAccount";
       accountBtn.addEventListener("click", () => {
-        if (userRole === "admin") window.location.href = "admin_dashboard.html";
-        else window.location.href = "client_notif.html";
+        if (userRole === "admin") window.location.href = "/admin-dashboard";
+        else window.location.href = "/client-notif";
       });
 
       navMenu.appendChild(accountBtn);
@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
           updateHeader();
 
           setTimeout(() => {
-            if (data.role === "admin") window.location.href = "admin_dashboard.html";
-            else window.location.href = "client_notif.html";
+            if (data.role === "admin") window.location.href = "/admin-dashboard";
+            else window.location.href = "/client-notif";
           }, 1000);
         } else {
           showPopup(data.message, "error");

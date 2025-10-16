@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             toggle.addEventListener('click', () => {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
-                toggleImg.src = type === 'password' ? 'http://localhost/BlissGateways/assets/icons/unsee.png' : 'http://localhost/BlissGateways/assets/icons/see.png';
+                toggleImg.src = type === 'password' ? '{{ url_for("static", filename="icons/unsee.png") }}' : '{{ url_for("static", filename="icons/see.png") }}';
             });
         }
     });

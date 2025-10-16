@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+   <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+   <link rel="stylesheet" href='{{ url_for("static", filename="css/auth/login.css") }}'>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="logo">
+      <img src='{{ url_for("static", filename="images/logo2.png") }}' alt="Bliss Gateways Logo" />
+    </div>
+
+    <div class="login-box">
+      <h2>Welcome Back</h2>
+      <p>Log in to your account</p>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter your email">
+        <img src="http://localhost/BlissGateways/assets/icons/mail.png" alt="Email Icon" class="input-icon">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper login-password-wrapper">
+          <input type="password" id="password" placeholder="Enter your password">
+          <span class="toggle-password login-toggle-password" id="toggle-password">
+            <img src='{{ url_for("static", filename="images/icons/unsee.png") }}' alt="Toggle Password" id="login-toggle-img">
+          </span>
+        </div>
+      </div>
+
+      <div class="forgot-password">
+        <a href="/forgot-password">Forgot password?</a>
+      </div>
+
+      <button id="login-button">Log In</button>
+
+      <div class="signup-link">
+        Don’t have an account? <a href="/">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+  
+  <script src="http://localhost/BlissGateways/auth/login.js"></script>
+  <script src='{{ url_for("static", filename="js/auth/login.js") }}'>
+    </script>
+</body>
+</html>
