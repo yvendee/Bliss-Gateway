@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+}
+
+.header {
+  width: 100%;
+  position: static;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 100px;
+  background: #091d46;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+}
+
+.logo-header {
+  height: 50px; 
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navigation > a { 
+  position: relative;
+  font-size: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 300;
+  margin-left: 40px;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;          
+  align-items: center; 
+  margin-left: 40px;  
+}
+
+.dropdown-toggle {
+  font-size: 12px;
+  color: #fff;
+  background: none;
+  border: none;
+  font-weight: 300;
+  margin: 0;             
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;         
+  display: inline-flex;   
+  align-items: center;    
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);      
+  width: 70px;         
+  background-color: #fff;
+  display: none;
+  flex-direction: column;
+  padding: 0;              
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.dropdown-menu.show {
+  display: flex;
+}
+
+.dropdown-menu a {
+  margin: 0;              
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: block;
+  text-align: center;
+}
+
+.dropdown-menu a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: #008EC4;
+  color: #fff;
+}
+
+.navigation .btnLogin-popup {
+    width: 110px;
+    height: 28px;
+    background: transparent;
+    border: 1px solid #fff;
+    outline: none;
+    border-radius: 15px;
+    font-size: 12px;
+    color: #fff;
+    font-weight: 400;
+    margin-left: 40px;
+    transition: .5s;
+    vertical-align: middle;
+}
+
+.navigation .btnLogin-popup:hover {
+    background: #fff;
+    color: #008EC4;
+}
+
+.separator {
+    width: 80%;
+    border-top: 0.2px solid #757575;
+    margin: 20px auto;
+}
+
+
+.footer {
+    background-color: #091d46;
+    color: white;
+    text-align: left; 
+    padding: 20px;
+    width: 100%; 
+    position: relative;
+    left: 0; 
+    flex-shrink: 0;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-column h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-column a,
+.footer-column p {
+    font-size: 12px;
+    color: #fff;
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center; 
+    margin: 5px 0; 
+    font-size: 12px;
+}
+
+.footer-separator {
+    border: none;
+    width: 80%;
+    border-top: 1px solid #757575; 
+    margin: 40px auto 30px auto;
+}
+
+main, .our-services, .explore-section {
+    flex: 1;
+}
+
+/* Notification Styles */
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup.success {
+  background: #4caf50; 
+  border-left: 5px solid #2e7d32;
+}
+
+.popup.error {
+  background: #f44336; 
+  border-left: 5px solid #b71c1c;
+}
+
+@keyframes popupIn {
+  0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  80% { transform: translateY(5px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.popup.show {
+  animation: popupIn 0.35s ease forwards;
+}
+
