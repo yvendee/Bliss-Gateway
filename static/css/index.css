@@ -6,7 +6,8 @@ body{
 .main-image1 {
     width: 100%;
     height: 60vh; 
-    background: url('{{ url_for("static", filename="images/home.jpg") }}') no-repeat center/cover;
+    /* background: url('{{ url_for("static", filename="images/home.jpg") }}') no-repeat center/cover; */
+    background: url('/static/images/home.jpg') no-repeat center/cover;
     position: static;
 }
 
@@ -225,4 +226,5 @@ body{
     color: #333;
     text-align: justify; 
 }
+
 
