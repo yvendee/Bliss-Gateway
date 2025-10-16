@@ -198,6 +198,10 @@ def forgot_password_page():
 
 
 
+@app.route("/header")
+def header_page():
+    # Render the HTML template for the /ui route
+    return render_template("header.html")
 
 @app.route('/api/logout')
 def logout():

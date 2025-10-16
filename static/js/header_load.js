@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const headerContainer = document.getElementById("header-container");
     if (headerContainer) {
-        fetch("/BlissGateways/header.html")
+        fetch("/header")
             .then(res => res.text())
             .then(html => {
                 headerContainer.innerHTML = html;

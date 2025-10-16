@@ -21,7 +21,7 @@
       <div class="form-group">
         <label for="email">Email Address</label>
         <input type="email" id="email" placeholder="Enter your email">
-        <img src="http://localhost/BlissGateways/assets/icons/mail.png" alt="Email Icon" class="input-icon">
+        <img src='{{ url_for("static", filename="icons/mail.png") }}' alt="Email Icon" class="input-icon">
       </div>
 
       <div class="form-group">
@@ -29,7 +29,7 @@
         <div class="password-wrapper login-password-wrapper">
           <input type="password" id="password" placeholder="Enter your password">
           <span class="toggle-password login-toggle-password" id="toggle-password">
-            <img src='{{ url_for("static", filename="images/icons/unsee.png") }}' alt="Toggle Password" id="login-toggle-img">
+            <img src='{{ url_for("static", filename="icons/unsee.png") }}' alt="Toggle Password" id="login-toggle-img">
           </span>
         </div>
       </div>
@@ -48,8 +48,7 @@
 
   <div id="popup" class="popup"></div>
   
-  <script src="http://localhost/BlissGateways/auth/login.js"></script>
   <script src='{{ url_for("static", filename="js/auth/login.js") }}'>
-    </script>
+  </script>
 </body>
 </html>

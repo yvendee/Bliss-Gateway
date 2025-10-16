@@ -1,0 +1,18 @@
+<header class="header">
+    <img src='{{ url_for("static", filename="images/logo2.png") }}' alt="Logo" class="logo-header" />
+    <nav class="navigation">
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+
+        <div class="dropdown" id="register-dropdown" style="display: flex;">
+            <button class="dropdown-toggle">Register</button>
+            <div class="dropdown-menu">
+                <a href="auth/client_signup.html">Client</a>
+                <a href="auth/admin_signup.html">Admin</a>
+            </div>
+        </div>
+
+        <button class="btnLogin-popup" id="login-btn">Login</button>
+    </nav>
+</header>
