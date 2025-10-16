@@ -138,6 +138,42 @@ def handle_mysql_error(e):
     return jsonify({"error": "MySQL database operation failed. Please check the database connection."}), 500
 
 
+# Check if the file "dev" exists
+if not os.path.exists('dev'):
+    # Execute this route if "dev" is not present and MySQL is available
+    @app.route('/', methods=['GET'])
+    def index():
+        if is_mysql_available():
+            # return jsonify({
+            #     "message": {
+            #         "status": "ok",
+            #         "developer": "kayven",
+            #         "email": "yvendee2020@gmail.com"
+            #     }
+            # })
+            return render_template("index.html")
+        else:
+            return jsonify({"error": "MySQL database not responding, please check the database service"}), 500
+else:
+    # Execute this route if "dev" exists
+    @app.route('/', methods=['GET'])
+    def index():
+        # return jsonify({"message": "Welcome to the baao disaster link"})
+        return render_template("index.html")
+
+
+@app.route("/services")
+def services_page():
+    # Render the HTML template for the /ui route
+    return render_template("services.html")
+
+
+@app.route("/about")
+def about_page():
+    # Render the HTML template for the /ui route
+    return render_template("about.html")
+
+
 @app.route('/api/logout')
 def logout():
     session.clear()
