@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Sign Up</title>
+
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/auth/admin_signup.css") }}'>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="admin-signup-page">
+    <div class="logo">
+      <img src='{{ url_for("static", filename="images/logo2.png") }}'  alt="Bliss Gateways Logo" />
+    </div>
+
+    <div class="admin-signup-box">
+      <h2>Welcome Back</h2>
+      <p>Log in to your account</p>
+
+      <div class="admin-form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" class="input-dimensions" placeholder="Enter your first name" required>
+        <img src='{{ url_for("static", filename="icons/user.png") }}'  alt="First Name Icon" class="input-icon">
+      </div>
+
+      <div class="admin-form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" class="input-dimensions" placeholder="Enter your last name" required>
+        <img src='{{ url_for("static", filename="icons/user.png") }}' alt="Last Name Icon" class="input-icon">
+      </div>
+
+      <div class="admin-form-group">
+        <label for="employee-id">Employee ID</label>
+        <input type="text" id="employee-id" class="input-dimensions" placeholder="Enter your employee ID" required>
+        <img src='{{ url_for("static", filename="icons/id.png") }}' alt="Employee-ID Icon" class="input-icon">
+      </div>
+
+      <div class="admin-form-group">
+        <label for="position">Position</label>
+        <select id="position" class="form-select" required>
+          <option value="" disabled selected>Enter your position</option>
+          <option value="company-owner">Company Owner</option>
+          <option value="general-manager">General Manager</option>
+          <option value="travel-consultant">Travel Consultant</option>
+        </select>
+      </div>
+
+      <div class="admin-form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" class="input-dimensions" placeholder="Enter your email" required>
+        <img src='{{ url_for("static", filename="icons/mail.png") }}'  alt="Email Icon" class="input-icon">
+      </div>
+
+      <div class="admin-form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" class="input-dimensions" placeholder="Create a password" required>
+          <span class="toggle-password">
+            <img src='{{ url_for("static", filename="icons/unsee.png") }}'  alt="Toggle Password" id="toggle-img">
+          </span>
+        </div>
+      </div>
+
+      <button id="signup-button">Sign Up</button>
+
+      <div class="admin-signup-link">
+        Already have an account? <a href="/login">Login</a>
+      </div>
+    </div>
+  </div>
+
+
+  <script src='{{ url_for("static", filename="js/script.js") }}'>
+  </script> 
+  <script src='{{ url_for("static", filename="js/auth/admin_signup.js") }}'>
+  </script> 
+
+</body>
+</html>

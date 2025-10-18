@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/auth/client_signup.css") }}'>
+
+</head>
+<body>
+  <div class="client-signup-page">
+    <div class="logo">
+      <img src='{{ url_for("static", filename="images/logo2.png") }}' alt="Bliss Gateways Logo" />
+    </div>
+
+    <div class="client-signup-box">
+      <h2>Create Your Account</h2>
+      <p>Sign up to get started</p>
+
+      <div class="client-form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" class="input-dimensions" placeholder="Enter your first name" required>
+        <img src='{{ url_for("static", filename="icons/user.png") }}' alt="First Name Icon" class="input-icon">
+      </div>
+
+      <div class="client-form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" class="input-dimensions" placeholder="Enter your last name" required>
+        <img src='{{ url_for("static", filename="icons/user.png") }}'  alt="Last Name Icon" class="input-icon">
+      </div>
+
+      <div class="client-form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" class="input-dimensions" placeholder="Enter your email" required>
+        <img src='{{ url_for("static", filename="icons/mail.png") }}'  alt="Email Icon" class="input-icon">
+      </div>
+
+      <div class="client-form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper client-password-wrapper">
+          <input type="password" id="password" class="input-dimensions" placeholder="Create a password" required>
+          <span class="toggle-password client-toggle-password">
+            <img src='{{ url_for("static", filename="icons/unsee.png") }}' alt="Toggle Password" id="client-toggle-img">
+          </span>
+        </div>
+      </div>
+
+      <button id="signup-button">Sign Up</button>
+
+      <div class="client-signup-link">
+        Already have an account? <a href="/login">Login</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup" class="popup"></div>
+
+  <script src='{{ url_for("static", filename="js/auth/client_signup.js") }}'>
+  </script>
+</body>
+</html>

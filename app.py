@@ -191,12 +191,27 @@ def login_page():
     # Render the HTML template for the /ui route
     return render_template("auth/login.html")
 
+@app.route("/auth/client-signup")
+def auth_client_signup():
+    # Render the HTML template for the /ui route
+    return render_template("auth/client_signup.html")
+
+
+@app.route("/auth/admin-signup")
+def auth_admin_signup():
+    # Render the HTML template for the /ui route
+    return render_template("auth/admin_signup.html")
+
+
 @app.route("/forgot-password")
 def forgot_password_page():
     # Render the HTML template for the /ui route
     return render_template("auth/forgot_password.html")
 
 
+# static\js\auth\client_signup.js
+# static\js\auth\login.js
+# static\js\auth\admin_signup.js
 
 @app.route("/header")
 def header_page():

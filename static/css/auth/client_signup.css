@@ -1,0 +1,133 @@
+.client-signup-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url('/static/images/beach.jpg') no-repeat center/cover;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.client-signup-box {
+  background-color: #fff;
+  padding: 35px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.client-signup-box h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #008EC4;
+}
+
+.client-signup-box p {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+.client-form-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.client-form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #008EC4;
+}
+
+.input-dimensions {
+  width: 100%;
+  height: 40px;
+  padding: 12px 20px 12px 12px;
+  border: 1px solid #c8c8c8;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.input-icon {
+  position: absolute;
+  right: 20px;
+  top: 72%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  opacity: 0.7;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.client-password-wrapper .client-toggle-password {
+  position: absolute;
+  right: 22px;
+  top: 25px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.client-password-wrapper .client-toggle-password img {
+  width: 19px;
+  height: 19px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.client-password-wrapper .client-toggle-password img:hover {
+  opacity: 1;
+}
+
+.client-signup-box button {
+  width: 100%;
+  padding: 10px;
+  background-color: #0077b6;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 10px 0 10px;
+}
+
+.client-signup-box button:hover {
+  background-color: #005f8e;
+}
+
+.client-signup-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.client-signup-link a {
+  color: #0077b6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.client-signup-link a:hover {
+  text-decoration: underline;
+}
