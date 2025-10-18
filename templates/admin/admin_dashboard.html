@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css" />
-  <link rel="stylesheet" href="admin_dashboard.css" />
+  <!-- <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="admin_dashboard.css" /> -->
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/admin/admin_dashboard.css") }}'>
+
 </head>
 <body>
 
@@ -17,27 +20,27 @@
       <h2 class="dashboard-title">Dashboard</h2>
       <div class="stats-cards">
         <div class="card">
-          <img src="../assets/icons/users.png" alt="Customers Icon" />
+          <img src='{{ url_for("static", filename="icons/users.png") }}' alt="Customers Icon" />
           <p>Total Users</p>
           <h3>--</h3>    
         </div>
         <div class="card">
-          <img src="../assets/icons/plane.png" alt="Flight Icon" />
+          <img src='{{ url_for("static", filename="icons/plane.png") }}' alt="Flight Icon" />
           <p>Flight Bookings</p>
           <h3>--</h3>
         </div>
         <div class="card">
-          <img src="../assets/icons/tourp.png" alt="Tour Icon" />
+          <img src='{{ url_for("static", filename="icons/tourp.png") }}' alt="Tour Icon" />
           <p>Tour Packages</p>
           <h3>--</h3>
         </div>
         <div class="card">
-          <img src="../assets/icons/kabayan.png" alt="Kabayan Icon" />
+          <img src='{{ url_for("static", filename="icons/kabayan.png") }}'  alt="Kabayan Icon" />
           <p>Kabayan Packages</p>
           <h3>--</h3>
         </div>
         <div class="card total-revenue">
-          <img src="../assets/icons/revenue.png" alt="Revenue Icon" />
+          <img src='{{ url_for("static", filename="icons/revenue.png") }}'  alt="Revenue Icon" />
           <p>Total Revenue</p>
           <h3>₱--</h3>
         </div>
@@ -145,9 +148,9 @@
     <div class="footer-container">
       <div class="footer-column">
         <h3>Quick Links</h3>
-        <a href="../index.html">Home</a>
-        <a href="../services.html">Services</a>
-        <a href="../about.html">About Us</a>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
       </div>
       <div class="footer-column">
         <h3>Business Hours</h3>
@@ -170,12 +173,19 @@
     </div>
   </footer>
 
-  <script src="/BlissGateways/index.js"></script>
-  <script src="/BlissGateways/script.js"></script>
-  <script src="admin_dashboard.js"></script>
-  <script src="/BlissGateways/header_load.js" defer></script>
-  <script src="/BlissGateways/logout.js" defer></script>
-  <script src="admin_global.js" defer></script>
+  <script src='{{ url_for("static", filename="js/index.js") }}'>
+  </script>
+  <script src='{{ url_for("static", filename="js/script.js") }}'>
+  </script>
+  <script src='{{ url_for("static", filename="js/admin/admin_dashboard.js") }}' >
+  </script>
+  <script src='{{ url_for("static", filename="js/header_load.js") }}' >
+  </script>
+  <script src='{{ url_for("static", filename="js/logout.js") }}'>
+  </script>
+  <script src='{{ url_for("static", filename="js/admin/admin_global.js") }}'>
+  </script>
+
 
 </body>
 </html>
