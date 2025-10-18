@@ -212,6 +212,7 @@ def forgot_password_page():
 # static\js\auth\client_signup.js
 # static\js\auth\login.js
 # static\js\auth\admin_signup.js
+# static\js\header_load.js
 
 @app.route("/header")
 def header_page():

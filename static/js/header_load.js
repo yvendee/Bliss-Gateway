@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // Check session AFTER header is injected
-                return fetch("/BlissGateways/check_session.php");
+                // return fetch("/BlissGateways/check_session.php");
             })
             .then(res => res.json())
             .then(data => {
