@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Redirect user back to index.html after login
         setTimeout(() => {
-          window.location.href = "../index.html"; 
+          window.location.href = "/"; 
         }, 1200);
       }
     })
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener("click", function () {
       if (pw.type === "password") { 
         pw.type = "text"; 
-        img.src = "http://localhost/BlissGateways/assets/icons/see.png"; 
+        img.src = '{{ url_for("static", filename="icons/see.png") }}'; 
       } else { 
         pw.type = "password"; 
-        img.src = "http://localhost/BlissGateways/assets/icons/unsee.png"; 
+        img.src = '{{ url_for("static", filename="icons/unsee.png") }}'; 
       }
     });
   }

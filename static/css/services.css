@@ -1,0 +1,136 @@
+.our-services {
+  padding: 45px 5%; 
+  text-align: center;
+}
+
+.our-services h2 {
+  font-size: 28px;
+  font-weight: 700;
+  padding: 0 0 20px; 
+  color: #091d46;
+}
+
+.services-label {
+  font-size: 16px;
+  margin-bottom: 50px; 
+  padding: 0 20px;
+  text-align: center;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  padding: 0 60px;
+  justify-content: center;
+}
+
+.service {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  transition: box-shadow 0.3s;
+  text-align: left;
+  width: 260px;
+  height: 400px;
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.service:hover {
+  box-shadow: 0 4px 8px rgba(4, 173, 246, 0.2);
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.service-image {
+  width: 100%;
+  height: 180px;
+  padding: 7px;
+  object-fit: cover;
+  display: block;
+}
+
+.circle-icon {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.service h3 {
+  margin: 30px 0 15px 0;
+  text-align: center;
+  font-size: 18px;
+  color: #091d46;
+}
+
+.service p {
+  margin: 0 10px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.select-button {
+  display: block;
+  margin: 20px auto 0 auto; 
+  padding:10px 40px;
+  background-color: #008EC4;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.select-button:hover {
+  background-color: #091d46;
+  color: #fff;
+}
+
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.popup.success {
+  background: #4caf50; 
+  border-left: 5px solid #2e7d32;
+}
+
+.popup.error {
+  background: #f44336; 
+  border-left: 5px solid #b71c1c;
+}
+
+@keyframes popupIn {
+  0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  80% { transform: translateY(5px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.popup.show {
+  animation: popupIn 0.35s ease forwards;
+}
