@@ -495,16 +495,10 @@ def get_admin_avatar():
 
 
 @app.route('/logout')
-def logout():
-    # Clear all session data
+def logout_user():
     session.clear()
-
-    # Optional: Create a response and manually expire the session cookie
     response = make_response(redirect('/'))
-    
-    # Delete session cookie (similar to PHP's session_destroy logic)
     response.set_cookie(key=session.cookie_name, value='', expires=0)
-
     return response
 
 
