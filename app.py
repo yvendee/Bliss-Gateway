@@ -531,9 +531,14 @@ def get_admin_avatar():
 @app.route('/logout', methods=['GET'])
 def logout_user():
     session.clear()
-    response = make_response(redirect('/'))
-    response.set_cookie(key=session.cookie_name, value='', expires=0)
-    return response
+    return redirect(url_for('login_page'))
+    # session.clear()
+    # response = make_response(redirect('/'))
+    # response.set_cookie(key=session.cookie_name, value='', expires=0)
+    # return response
+
+
+
 
 
 if __name__ == '__main__':
