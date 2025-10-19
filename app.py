@@ -162,6 +162,134 @@ else:
         return render_template("index.html")
 
 
+
+## ------ create table ---------------- ##
+@app.route('/create-auth-table', methods=['POST'])
+def create_auth_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS auth (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            passwordHash TEXT,
+            role TEXT,
+            groupId TEXT,
+            email TEXT,
+            status TEXT,
+            token TEXT,
+            resetCode TEXT,
+            userName TEXT,
+            organizationName TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "auth table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+## ------ insert record ---------------- ##
+@app.route('/insert-mock-auth', methods=['POST'])
+def insert_mock_auth():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        mock_data = {
+            "uID": generate_random_string(12),
+            "passwordHash": "admin1234",
+            "role": "admin",
+            "groupId": "group-001",
+            "email": "yvendee2020@gmail.com",
+            "status": "active",
+            "token": generate_random_string(40),
+            "resetCode": generate_random_string(6),
+            "userName": "testuser",
+            "organizationName": "test organization"
+        }
+
+        insert_query = """
+        INSERT INTO auth (
+            uID, passwordHash, role, groupId, email, status, token, resetCode, userName, organizationName
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["passwordHash"],
+            mock_data["role"],
+            mock_data["groupId"],
+            mock_data["email"],
+            mock_data["status"],
+            mock_data["token"],
+            mock_data["resetCode"],
+            mock_data["userName"],
+            mock_data["organizationName"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock auth record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+## ------ show records ---------------- ##
+@app.route('/show-content/<table_name>', methods=['GET'])
+def show_table_content(table_name):
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Validate table name to prevent SQL injection (only allow known safe table names)
+        allowed_tables = [
+            'auth', 'subscribers', 'weather_data',
+            'evacuation_data', 'flooding_data', 'forecast_data', 'broadcast'
+        ]
+
+        if table_name not in allowed_tables:
+            return jsonify({"error": "Invalid table name"}), 400
+
+        query = f"SELECT * FROM {table_name};"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        column_names = [desc[0] for desc in cursor.description]
+
+        results = [dict(zip(column_names, row)) for row in rows]
+
+        return jsonify({ "table": table_name, "data": results }), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+
 @app.route("/services")
 def services_page():
     # Render the HTML template for the /ui route
