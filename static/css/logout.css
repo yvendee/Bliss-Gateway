@@ -1,0 +1,40 @@
+#confirmPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(2, 141, 200, 0.2);
+    z-index: 1000;
+    display: none;
+    text-align: center;
+}
+
+#confirmPopup p {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+#confirmPopup button {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+#confirmLogout {
+    background-color: #008EC4;
+    color: white;
+}
+
+#confirmLogout:hover { background-color: #006fa1; }
+#cancelLogout { background-color: #e0e0e0; }
+#cancelLogout:hover { background-color: #999999; }
+
+

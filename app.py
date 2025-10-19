@@ -385,6 +385,8 @@ def forgot_password_page():
 # static\js\logout.js
 # static\js\admin\admin_global.js
 
+# templates\admin\admin_profile.html
+
 @app.route("/header")
 def header_page():
     # Render the HTML template for the /ui route
@@ -517,7 +519,7 @@ def check_session():
 @app.route('/api/get-admin-avatar', methods=['GET'])
 def get_admin_avatar():
     # Set default avatar URL using static path
-    default_avatar = url_for('static', filename='images/profile.png')
+    default_avatar = url_for('static', filename='icons/profile.png')
 
     avatar_url = session.get('admin_avatar')
     if avatar_url:
