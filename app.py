@@ -313,7 +313,7 @@ def about_page():
 @app.route("/admin-dashboard")
 def admin_dashboard_page():
     # Render the HTML template for the /ui route
-    return render_template("admin/admin-dashboard.html")
+    return render_template("admin/admin_dashboard.html")
 
 
 @app.route("/client-notif")
