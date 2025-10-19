@@ -209,6 +209,77 @@ def create_auth_table():
     finally:
         cursor.close()
 
+# | Route                         | Purpose                                               |
+# | ----------------------------- | ----------------------------------------------------- |
+# | `POST /create-booking-tables` | Create the 4 booking tables                           |
+# | `POST /create-payments-table` | Create the payments table                             |
+
+@app.route('/create-booking-tables', methods=['POST'])
+def create_booking_tables():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+    
+    try:
+        booking_table_template = """
+        CREATE TABLE IF NOT EXISTS {table} (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            booking_id VARCHAR(50) NOT NULL,
+            customer_name VARCHAR(100),
+            destination VARCHAR(100),
+            date DATE,
+            amount DECIMAL(10,2),
+            status VARCHAR(50)
+        );
+        """
+
+        for table in ["flight_bookings", "tour_bookings", "kabayan_bookings", "itinerary_bookings"]:
+            cursor.execute(booking_table_template.format(table=table))
+
+        db_connection.commit()
+        return jsonify({"message": "Booking tables created successfully."}), 200
+    
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+    
+    finally:
+        cursor.close()
+
+@app.route('/create-payments-table', methods=['POST'])
+def create_payments_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        payment_table_query = """
+        CREATE TABLE IF NOT EXISTS payments (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            booking_id VARCHAR(50) NOT NULL,
+            amount_due DECIMAL(10,2),
+            amount_paid DECIMAL(10,2),
+            status VARCHAR(50)
+        );
+        """
+        cursor.execute(payment_table_query)
+
+        db_connection.commit()
+        return jsonify({"message": "Payments table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+
 ## ------ insert record ---------------- ##
 @app.route('/insert-mock-auth', methods=['POST'])
 def insert_mock_auth():
@@ -253,6 +324,92 @@ def insert_mock_auth():
 
         db_connection.commit()
         return jsonify({"message": "Mock auth record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+# | Route                         | Purpose                                               |
+# | ----------------------------- | ----------------------------------------------------- |
+# | `POST /insert-mock-bookings`  | Insert 1 mock record into each booking table          |
+# | `POST /insert-mock-payments`  | Insert matching payment records for given booking IDs |
+@app.route('/insert-mock-bookings', methods=['POST'])
+def insert_mock_bookings():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        from datetime import date
+        import random, string
+
+        def generate_booking_id():
+            return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
+        inserted_bookings = []
+
+        booking_tables = ["flight_bookings", "tour_bookings", "kabayan_bookings", "itinerary_bookings"]
+        for table in booking_tables:
+            booking_id = generate_booking_id()
+            cursor.execute(f"""
+                INSERT INTO {table} (booking_id, customer_name, destination, date, amount, status)
+                VALUES (%s, %s, %s, %s, %s, %s);
+            """, (
+                booking_id,
+                "John Doe",
+                "Japan",
+                date.today(),
+                1999.99,
+                "confirmed"
+            ))
+            inserted_bookings.append(booking_id)
+
+        db_connection.commit()
+        return jsonify({
+            "message": "Mock bookings inserted successfully.",
+            "booking_ids": inserted_bookings
+        }), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-payments', methods=['POST'])
+def insert_mock_payments():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        data = request.get_json()
+        booking_ids = data.get('booking_ids', [])
+
+        if not booking_ids:
+            return jsonify({"error": "No booking_ids provided"}), 400
+
+        for booking_id in booking_ids:
+            cursor.execute("""
+                INSERT INTO payments (booking_id, amount_due, amount_paid, status)
+                VALUES (%s, %s, %s, %s);
+            """, (
+                booking_id,
+                1999.99,
+                1999.99,
+                "paid"
+            ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock payments inserted successfully."}), 201
 
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
