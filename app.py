@@ -405,7 +405,7 @@ def insert_mock_payments():
                 booking_id,
                 1999.99,
                 1999.99,
-                "paid"
+                "verified"
             ))
 
         db_connection.commit()
