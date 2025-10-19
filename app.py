@@ -773,8 +773,8 @@ def dashboard_overview():
         kabayans = fetch_bookings_with_payments("kabayan_bookings")
         itineraries = fetch_bookings_with_payments("itinerary_bookings")
 
-        # 4. Total revenue from payments with status = 'confirmed'
-        cursor.execute("SELECT SUM(amount_paid) AS total_revenue FROM payments WHERE status = 'confirmed'")
+        # 4. Total revenue from payments with status = 'verified'
+        cursor.execute("SELECT SUM(amount_paid) AS total_revenue FROM payments WHERE status = 'verified'")
         total_revenue = cursor.fetchone()[0] or 0.00
 
         return jsonify({
