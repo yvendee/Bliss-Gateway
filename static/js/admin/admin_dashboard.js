@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Fetch dashboard data
-    fetch("/BlissGateways/admin/admin_dashboard.php")
+    // fetch("/BlissGateways/admin/admin_dashboard.php")
+    fetch("/api/dashboard-overview")
         .then(async res => {
             if (!res.ok) {
                 throw new Error("Network response was not ok: " + res.statusText);

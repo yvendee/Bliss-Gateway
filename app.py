@@ -331,10 +331,63 @@ def insert_mock_auth():
     finally:
         cursor.close()
 
+
+@app.route('/insert-mock-auth-client', methods=['POST'])
+def insert_mock_client():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        mock_data = {
+            "uID": generate_random_string(12),
+            "passwordHash": "client1234", 
+            "role": "client",
+            "groupId": "group-002",
+            "email": "yvendee18@gmail.com",
+            "status": "active",
+            "token": generate_random_string(40),
+            "resetCode": generate_random_string(6),
+            "userName": "testclient",
+            "organizationName": "client org"
+        }
+
+        insert_query = """
+        INSERT INTO auth (
+            uID, passwordHash, role, groupId, email, status, token, resetCode, userName, organizationName
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["passwordHash"],
+            mock_data["role"],
+            mock_data["groupId"],
+            mock_data["email"],
+            mock_data["status"],
+            mock_data["token"],
+            mock_data["resetCode"],
+            mock_data["userName"],
+            mock_data["organizationName"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock client record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
 # | Route                         | Purpose                                               |
 # | ----------------------------- | ----------------------------------------------------- |
 # | `POST /insert-mock-bookings`  | Insert 1 mock record into each booking table          |
 # | `POST /insert-mock-payments`  | Insert matching payment records for given booking IDs |
+
 @app.route('/insert-mock-bookings', methods=['POST'])
 def insert_mock_bookings():
     if not is_mysql_available():
@@ -684,6 +737,60 @@ def get_admin_avatar():
         return jsonify({"avatar_url": avatar_url})
 
     return jsonify({"avatar_url": default_avatar})
+
+
+@app.route('/api/dashboard-overview', methods=['GET'])
+def dashboard_overview():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+    
+    try:
+        # 1. Total Users (role = 'client')
+        cursor.execute("SELECT COUNT(*) AS total_users FROM auth WHERE role = 'client'")
+        total_users = cursor.fetchone()[0] or 0
+
+        # 2. Function to fetch bookings with payments
+        def fetch_bookings_with_payments(table_name):
+            query = f"""
+                SELECT 
+                    b.id, b.booking_id, b.customer_name, b.destination, b.date, b.amount, b.status,
+                    p.amount_due, p.amount_paid, p.status AS payment_status
+                FROM {table_name} b
+                LEFT JOIN payments p ON b.booking_id = p.booking_id
+                ORDER BY b.id DESC
+            """
+            cursor.execute(query)
+            columns = [col[0] for col in cursor.description]
+            return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+        # 3. Fetch bookings from all 4 tables
+        flights = fetch_bookings_with_payments("flight_bookings")
+        tours = fetch_bookings_with_payments("tour_bookings")
+        kabayans = fetch_bookings_with_payments("kabayan_bookings")
+        itineraries = fetch_bookings_with_payments("itinerary_bookings")
+
+        # 4. Total revenue from payments with status = 'confirmed'
+        cursor.execute("SELECT SUM(amount_paid) AS total_revenue FROM payments WHERE status = 'confirmed'")
+        total_revenue = cursor.fetchone()[0] or 0.00
+
+        return jsonify({
+            "total_users": total_users,
+            "flight_bookings": flights,
+            "tour_bookings": tours,
+            "kabayan_bookings": kabayans,
+            "itinerary_bookings": itineraries,
+            "total_revenue": float(total_revenue)
+        }), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
 
 
 @app.route('/logout', methods=['GET'])
