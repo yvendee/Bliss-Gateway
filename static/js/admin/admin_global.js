@@ -25,13 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (logoutBtn && logoutModal && confirmLogout && cancelLogout) {
         logoutBtn.addEventListener("click", () => logoutModal.classList.remove("hidden"));
-        confirmLogout.addEventListener("click", () => window.location.href = "/BlissGateways/logout.php");
+        confirmLogout.addEventListener("click", () => window.location.href = "/logout");
         cancelLogout.addEventListener("click", () => logoutModal.classList.add("hidden"));
         window.addEventListener("click", e => {
           if (e.target === logoutModal) logoutModal.classList.add("hidden");
         });
       } else if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => window.location.href = "/BlissGateways/logout.php");
+        logoutBtn.addEventListener("click", () => window.location.href = "/logout");
       }
 
       // --- Profile upload preview & sidebar sync ---
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // --- Fetch stored avatar from server ---
       if (sidebarAvatar) {
-        fetch("get_admin_avatar.php")
+        fetch("/api/get-admin-avatar")
           .then(res => res.json())
           .then(data => {
             if (data.avatar_url) {

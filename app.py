@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash, send_from_directory, send_file
+from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash, send_from_directory, send_file, make_response
 
 # from dotenv import load_dotenv
 import mysql.connector
@@ -480,6 +480,32 @@ def check_session():
         return jsonify({
             "isLoggedIn": False
         })
+
+
+@app.route('/api/get-admin-avatar', methods=['GET'])
+def get_admin_avatar():
+    # Set default avatar URL using static path
+    default_avatar = url_for('static', filename='images/profile.png')
+
+    avatar_url = session.get('admin_avatar')
+    if avatar_url:
+        return jsonify({"avatar_url": avatar_url})
+
+    return jsonify({"avatar_url": default_avatar})
+
+
+@app.route('/logout')
+def logout():
+    # Clear all session data
+    session.clear()
+
+    # Optional: Create a response and manually expire the session cookie
+    response = make_response(redirect('/'))
+    
+    # Delete session cookie (similar to PHP's session_destroy logic)
+    response.set_cookie(key=session.cookie_name, value='', expires=0)
+
+    return response
 
 
 if __name__ == '__main__':
