@@ -393,7 +393,7 @@ def header_page():
     return render_template("header.html")
 
 @app.route('/api/logout')
-def logout():
+def logout_session():
     session.clear()
     return redirect(url_for('login_page'))
 
