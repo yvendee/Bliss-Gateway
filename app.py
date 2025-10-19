@@ -254,7 +254,7 @@ def insert_mock_auth():
 
 
 ## ------ show records ---------------- ##
-@app.route('/show-content/<table_name>', methods=['GET'])
+@app.route('/show-table/<table_name>', methods=['GET'])
 def show_table_content(table_name):
     if not is_mysql_available():
         return handle_mysql_error("MySQL not available")
@@ -356,6 +356,57 @@ def logout():
     return redirect(url_for('login_page'))
 
 
+# @app.route('/api/login', methods=['POST'])
+# def login_api():
+#     if not is_mysql_available():
+#         return handle_mysql_error("MySQL not available")
+    
+#     cursor = get_cursor()
+#     if not cursor:
+#         return handle_mysql_error("Unable to get MySQL cursor")
+
+#     try:
+#         data = request.form  # Handles form data from the login page
+#         username = data.get('userName')
+#         password = data.get('password')
+
+#         if not username or not password:
+#             return jsonify({"error": "Missing credentials"}), 400
+
+#         # Hash password to compare with stored hash
+#         # password_hash = hashlib.sha256(password.encode()).hexdigest()
+#         password_hash = password
+
+#         # Query user
+#         query = """
+#             SELECT * FROM auth WHERE userName = %s AND passwordHash = %s AND status = 'active' LIMIT 1;
+#         """
+#         cursor.execute(query, (username, password_hash))
+#         user = cursor.fetchone()
+
+#         if user:
+#             # Store essential info in session
+#             session['user'] = {
+#                 "id": user[0],
+#                 "uID": user[1],
+#                 "userName": user[9],
+#                 "role": user[3],
+#                 "email": user[5]
+#             }
+#             return redirect(url_for('dashboard'))  # Redirect to a protected page (example)
+#         else:
+#             flash("Invalid username or password", "danger")
+#             return redirect(url_for('login_page'))
+
+#     except mysql.connector.Error as e:
+#         return handle_mysql_error(e)
+
+#     finally:
+#         cursor.close()
+
+
+from flask import request, jsonify, session
+
 @app.route('/api/login', methods=['POST'])
 def login_api():
     if not is_mysql_available():
@@ -366,26 +417,24 @@ def login_api():
         return handle_mysql_error("Unable to get MySQL cursor")
 
     try:
-        data = request.form  # Handles form data from the login page
-        username = data.get('userName')
+        data = request.get_json()  # Expecting JSON from JS fetch
+        email = data.get('email')
         password = data.get('password')
 
-        if not username or not password:
-            return jsonify({"error": "Missing credentials"}), 400
+        if not email or not password:
+            return jsonify({"status": "error", "message": "Missing credentials"}), 400
 
-        # Hash password to compare with stored hash
-        # password_hash = hashlib.sha256(password.encode()).hexdigest()
+        # No password hashing for now
         password_hash = password
 
-        # Query user
+        # Query user by email and password
         query = """
-            SELECT * FROM auth WHERE userName = %s AND passwordHash = %s AND status = 'active' LIMIT 1;
+            SELECT * FROM auth WHERE email = %s AND passwordHash = %s AND status = 'active' LIMIT 1;
         """
-        cursor.execute(query, (username, password_hash))
+        cursor.execute(query, (email, password_hash))
         user = cursor.fetchone()
 
         if user:
-            # Store essential info in session
             session['user'] = {
                 "id": user[0],
                 "uID": user[1],
@@ -393,10 +442,13 @@ def login_api():
                 "role": user[3],
                 "email": user[5]
             }
-            return redirect(url_for('dashboard'))  # Redirect to a protected page (example)
+            return jsonify({
+                "status": "success",
+                "message": "Login successful",
+                "role": user[3]  # Send back role for frontend redirect
+            }), 200
         else:
-            flash("Invalid username or password", "danger")
-            return redirect(url_for('login_page'))
+            return jsonify({"status": "error", "message": "Invalid email or password"}), 401
 
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
