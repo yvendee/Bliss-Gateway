@@ -431,7 +431,8 @@ def show_table_content(table_name):
     try:
         # Validate table name to prevent SQL injection (only allow known safe table names)
         allowed_tables = [
-            'auth', 'subscribers', 'weather_data',
+            'auth', 'flight_bookings', 'tour_bookings', 'kabayan_bookings', 'itinerary_bookings', 'payments',
+            'subscribers', 'weather_data', 
             'evacuation_data', 'flooding_data', 'forecast_data', 'broadcast'
         ]
 
