@@ -1,0 +1,27 @@
+<aside class="admin-sidebar">
+  <img src='{{ url_for("static", filename="icons/profile.png") }}'  alt="Admin Avatar" class="admin-avatar" id="sidebarAvatar" />
+  <hr class="avatar-separator" />
+  <div class="sidebar-menu">
+    <a href="/admin-dashboard" class="sidebar-link">Dashboard</a>
+    <a href="/admin-notif" class="sidebar-link">Notifications</a>
+    <a href="/admin-profile" class="sidebar-link">My Profile</a>
+    <a href="/admin-payments" class="sidebar-link">Payment Verification</a>
+    <a href="/admin-manage-clients" class="sidebar-link">Manage Customers</a>
+    <a href="/admin-manage-feedbacks" class="sidebar-link">Manage Feedbacks</a>
+  </div>
+  <button id="adminLogoutBtn" class="sidebar-logout">Logout</button>
+</aside>
+
+  <div id="logoutModal" class="logout-modal hidden">
+    <div class="logout-modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="logout-buttons">
+        <button id="confirmLogout" class="btn-yes">Yes</button>
+        <button id="cancelLogout" class="btn-no">No</button>
+      </div>
+    </div>
+  </div>
+
+<link rel="stylesheet" href='{{ url_for("static", filename="css/admin_sidebar.css") }}'>
+<script src='{{ url_for("static", filename="js/admin_global.js") }}'>
+</script>

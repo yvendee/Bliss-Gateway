@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.admin-dashboard {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 auto;
+    width: 100%;
+    align-items: stretch;
+    padding: 0;
+    min-height: 750px;
+}
+
+.dashboard-main {
+    flex: 1;
+    padding: 20px;
+}
+
+.title {
+    margin: 20px 0;
+    font-size: 24px;
+    margin-left: 100px;
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    margin-left: 55px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 100px;
+    background-color: #cef1ff;
+    padding: 15px;
+    width: 1100px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-container input[type="text"] {
+    padding: 5px;
+    border: 1px solid #d3d3d3;
+    font-size: 13px;
+    background-color: #f4f7fc;
+    width: 250px; 
+}
+
+#search-button,
+#add-customer-button {
+    padding: 6px 15px;
+    border: none;
+    border-radius: 25px;
+    background-color: #008ec4;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#search-button:hover,
+#add-customer-button:hover {
+    background-color: #006fa1;
+    transform: translateY(-2px);
+}
+
+.payment-section {
+    flex: 1;
+    background-color: #fff;
+    padding: 30px;
+}
+
+.table-title {
+    margin-left: 100px;
+    font-size: 20px;
+    margin-bottom: none;
+    margin-top: 50px;
+}
+
+.table-container {
+    max-height: 500px;
+    height: 500px;
+    overflow-y: auto;
+    margin-top: none;
+    margin-left: 70px;
+    width: 1100px;
+}
+
+#customers-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+#customers-table th,
+#customers-table td {
+    padding: 12px;
+    font-size: 13px;
+    border: 1px solid #d3d3d3;
+}
+
+#customers-table tbody tr {
+    background-color: #f4f7fc;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+    color: #757575;
+}
+
+footer.footer {
+    flex-shrink: 0;
+    padding: 20px;
+    width: 100%;
+    margin-top: auto;
+}

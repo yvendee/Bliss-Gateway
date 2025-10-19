@@ -1,0 +1,118 @@
+/* --- General --- */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 1 0 auto;
+}
+
+.admin-dashboard {
+  flex: 1;
+  padding: 30px 20px; 
+  box-sizing: border-box;
+}
+
+.dashboard-main {
+  background-color: #fff;
+  padding: 0;
+}
+
+.dashboard-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px; 
+  margin-left: 0; 
+  margin-left: 100px;
+}
+
+/* --- Filter Section --- */
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  background-color: #d6f3ff;
+  border: 1px solid #d3d3d3;
+  padding: 12px;
+  margin-bottom: 15px;
+  margin-left: 100px;
+}
+
+.filter-menu {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-button {
+  padding: 6px 30px;
+  border: 1px solid #d3d3d3;
+  border-radius: 25px;
+  background-color: #f4f7fc;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #008ec4;
+  color: #fff;
+}
+
+.filter-button.active {
+  background-color: #008ec4;
+  color: #fff;
+}
+
+/* --- Feedbacks Table/Container --- */
+.feedbacks-section {
+  margin-top: 10px;
+}
+
+.feedbacks-container {
+  max-height: 600px;
+  border: 1px solid #d3d3d3;
+  padding: 10px;
+  overflow-y: auto;
+  height: 600px;
+  margin-left: 100px;
+}
+
+.feedbacks-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.feedbacks-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.feedbacks-container::-webkit-scrollbar-thumb {
+  background-color: #0ea5e9;
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+.feedbacks-container::-webkit-scrollbar-thumb:hover {
+  background-color: #0284c7;
+}
+
+.empty-message {
+  text-align: center;
+  font-style: italic;
+  color: #757575;
+  padding: 20px;
+  font-size: 13px;
+}
+
+.footer {
+  flex-shrink: 0;
+  padding: 20px;
+  width: 100%;
+  margin-top: auto;
+}
+

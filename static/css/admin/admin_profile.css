@@ -1,0 +1,184 @@
+body { 
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: row;       
+  flex: 1 0 auto;            
+  width: 100%;
+  align-items: stretch;        
+  padding: 0 0 0 70px;        
+  height: 650px; 
+}
+
+.dashboard-main {
+  flex: 1;
+  background: #fff;
+  padding: 35px;
+  margin-left: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dashboard-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 30px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button, .save-button {
+  padding: 5px 45px;
+  background-color: #008ec4;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.edit-button:hover, .save-button:hover {
+  background-color: #006fa1;
+}
+
+.profile-sections {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap; 
+}
+
+.personal-info-container,
+.account-settings {
+  background: #f8fdff;
+  border: 1px solid #d3d3d3;
+  padding: 20px;
+  border-radius: 8px;
+  margin-left: 30px;
+}
+
+.personal-info-container {
+  flex: 2;
+  min-width: 450px;
+}
+
+.account-settings {
+  flex: 1;
+  min-width: 250px;
+  max-width: 30%;
+}
+
+.personal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: repeat(4, auto); 
+  gap: 20px;
+}
+
+@media screen and (max-width: 600px) {
+  .personal-info-grid {
+    grid-template-columns: 1fr; 
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+input, select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  border-color: #008ec4;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0,142,196,0.4);
+}
+
+.profile-pic-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #e6f4fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cancel-button {
+  padding: 5px 30px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #aaa;
+}
+
+.profile-edit-icon {
+  position: absolute;
+  bottom: -5px;   
+  right: -5px;
+  background: rgba(0,0,0,0.5); 
+  color: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 2px solid #fff; 
+}
+
+.footer {
+  flex-shrink: 0; 
+  padding: 20px;
+  width: 100%;
+  margin-top: auto; 
+}

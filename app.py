@@ -315,11 +315,43 @@ def admin_dashboard_page():
     # Render the HTML template for the /ui route
     return render_template("admin/admin_dashboard.html")
 
+@app.route("/admin-notif")
+def admin_notif_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin_notif.html")
+
+@app.route("/admin-profile")
+def admin_profile_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin_profile.html")
+
+
+@app.route("/admin-payments")
+def admin_payments_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin_payments.html")
+
+
+@app.route("/admin-manage-clients")
+def admin_manage_clients_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin_manage_clients.html")
+
+
+@app.route("/admin-manage-feedbacks")
+def admin_manage_feedbacks_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin/admin_manage_feedbacks.html")
 
 @app.route("/client-notif")
 def client_notif_page():
     # Render the HTML template for the /ui route
     return render_template("client/client_notif.html")
+
+@app.route("/admin-sidebar")
+def admin_sidebar_page():
+    # Render the HTML template for the /ui route
+    return render_template("admin_sidebar.html")
 
 
 @app.route("/login")
