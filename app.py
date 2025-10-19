@@ -528,7 +528,7 @@ def get_admin_avatar():
     return jsonify({"avatar_url": default_avatar})
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['GET'])
 def logout_user():
     session.clear()
     response = make_response(redirect('/'))
