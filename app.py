@@ -464,6 +464,23 @@ def login_api():
         cursor.close()
 
 
+@app.route('/api/check-session', methods=['GET'])
+def check_session():
+    user = session.get('user')
+
+    if user:
+        return jsonify({
+            "isLoggedIn": True,
+            "userRole": user.get("role", "client"),
+            # "firstName": user.get("firstName", ""),
+            "firstName": user.get("userName", "")
+            
+        })
+    else:
+        return jsonify({
+            "isLoggedIn": False
+        })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
