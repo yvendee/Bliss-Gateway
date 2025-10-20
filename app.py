@@ -278,6 +278,38 @@ def create_payments_table():
     finally:
         cursor.close()
 
+@app.route('/create-notifications-table', methods=['POST'])
+def create_notifications_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+    
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            category TEXT,
+            title TEXT,
+            message TEXT,
+            type TEXT,
+            is_read BOOLEAN DEFAULT FALSE,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (uID) REFERENCES auth(uID) ON DELETE CASCADE
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "Notifications table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
 
 
 ## ------ insert record ---------------- ##
@@ -463,6 +495,47 @@ def insert_mock_payments():
 
         db_connection.commit()
         return jsonify({"message": "Mock payments inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-notifications', methods=['POST'])
+def insert_mock_notifications():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+    
+    try:
+        # Mock notification data
+        mock_notifications = [
+            {"uID": "hSONQhOgnFPV", "category": "System", "title": "Welcome", "message": "Welcome to the platform!", "type": "info", "is_read": False},
+            {"uID": "hSONQhOgnFPV", "category": "Promotion", "title": "Special Offer", "message": "Get 20% off your next purchase.", "type": "alert", "is_read": False},
+            {"uID": "hSONQhOgnFPV", "category": "Reminder", "title": "Action Required", "message": "Please update your payment info.", "type": "warning", "is_read": False},
+        ]
+        
+        # Insert each mock notification
+        insert_query = """
+        INSERT INTO notifications (uID, category, title, message, type, is_read) 
+        VALUES (%s, %s, %s, %s, %s, %s);
+        """
+        for notification in mock_notifications:
+            cursor.execute(insert_query, (
+                notification["uID"],
+                notification["category"],
+                notification["title"],
+                notification["message"],
+                notification["type"],
+                notification["is_read"]
+            ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock notifications inserted successfully."}), 201
 
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
@@ -785,6 +858,49 @@ def dashboard_overview():
             "itinerary_bookings": itineraries,
             "total_revenue": float(total_revenue)
         }), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/api/get-notifications', methods=['GET'])
+def get_notifications():
+    if 'user' not in session:
+        return jsonify({"error": "not_logged_in"}), 401
+
+    user_id = session['user']['uID']
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Query to fetch notifications for the logged-in user
+        query = """
+        SELECT id, uID, category, title, message, created_at, type, is_read 
+        FROM notifications 
+        WHERE uID = %s 
+        ORDER BY created_at DESC
+        """
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchall()
+
+        notifications = []
+        for row in result:
+            notifications.append({
+                "id": row[0],
+                "uID": row[1],
+                "category": row[2],
+                "title": row[3],
+                "message": row[4],
+                "created_at": row[5],
+                "type": row[6],
+                "is_read": row[7]
+            })
+
+        return jsonify(notifications)
 
     except mysql.connector.Error as e:
         return handle_mysql_error(e)

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyMessage = document.getElementById("adminEmptyMessage");
 
   // Load admin notifications
-  fetch("/BlissGateways/get_notifications.php")
+  fetch("/api/get-notifications")
     .then(res => res.json())
     .then(notifications => {
       notificationsContainer.innerHTML = "";
