@@ -886,6 +886,11 @@ def get_notifications():
         cursor.execute(query, (user_id,))
         result = cursor.fetchall()
 
+        # If no notifications, return an empty list
+        if not result:
+            return jsonify([])  # Empty list if no records found
+
+        # Process the query results
         notifications = []
         for row in result:
             notifications.append({
