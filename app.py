@@ -297,8 +297,7 @@ def create_notifications_table():
             message TEXT,
             type TEXT,
             is_read BOOLEAN DEFAULT FALSE,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (uID) REFERENCES auth(uID) ON DELETE CASCADE
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         """
         cursor.execute(create_table_query)
