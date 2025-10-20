@@ -873,7 +873,7 @@ def get_notifications():
     
     cursor = get_cursor()
     if not cursor:
-        return handle_mysql_error("Unable to get MySQL cursor")
+        return jsonify({"error": "Unable to get MySQL cursor"}), 500
 
     try:
         # Query to fetch notifications for the logged-in user
@@ -907,10 +907,12 @@ def get_notifications():
         return jsonify(notifications)
 
     except mysql.connector.Error as e:
-        return handle_mysql_error(e)
+        app.logger.error(f"MySQL error: {str(e)}")
+        return jsonify({"error": "Database error"}), 500
 
     finally:
-        cursor.close()
+        cursor.close()  # Close the cursor
+
 
 
 @app.route('/logout', methods=['GET'])
