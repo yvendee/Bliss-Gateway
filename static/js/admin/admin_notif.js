@@ -81,10 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("mark-read-btn")) {
       const notifId = e.target.getAttribute("data-id");
 
-      fetch("/api/mark-notification-read", { // <-- go up one folder
+      fetch("/api/mark-notification-read", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `id=${notifId}`
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: parseInt(notifId) })
       })
         .then(res => res.json())
         .then(data => {
@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => console.error("Error marking notification:", err));
     }
   });
+
 
   // Filtering
   document.querySelectorAll(".filter-button").forEach(btn => {
