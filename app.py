@@ -777,6 +777,11 @@ def admin_sidebar_page():
     # Render the HTML template for the /ui route
     return render_template("admin_sidebar.html")
 
+@app.route("/client-sidebar")
+def client_sidebar_page():
+    # Render the HTML template for the /ui route
+    return render_template("client/client_sidebar.html")
+
 
 @app.route("/login")
 def login_page():
@@ -808,8 +813,9 @@ def forgot_password_page():
 # static\js\admin\admin_dashboard.js
 # static\js\logout.js
 # static\js\admin\admin_global.js
-
 # templates\admin\admin_profile.html
+
+# templates\client\client_sidebar.html
 
 @app.route("/header")
 def header_page():

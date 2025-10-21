@@ -1,0 +1,25 @@
+<div class="client-sidebar">
+    <img src='{{ url_for("static", filename="icons/profile.png") }}' alt="Client Avatar" class="client-avatar" id="clientAvatar">
+
+    <hr class="avatar-separator">
+
+    <nav class="sidebar-menu">
+        <a href="/client-notif" class="sidebar-link">Notifications</a>
+        <a href="/client-profile" class="sidebar-link">My Profile</a>
+        <a href="/client-bookings" class="sidebar-link">My Bookings</a>
+        <a href="/client-itineraries" class="sidebar-link">My Itineraries</a>
+        <a href="/client-feedback" class="sidebar-link">My Feedback</a>
+    </nav>
+
+    <button class="sidebar-logout" id="clientLogoutBtn">Logout</button>
+
+    <div id="logoutModal" class="logout-modal hidden">
+        <div class="logout-content">
+            <p>Are you sure you want to logout?</p>
+            <button id="confirmLogout">Yes</button>
+            <button id="cancelLogout">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href='{{ url_for("static", filename="css/client/client_sidebar.css") }}'>
