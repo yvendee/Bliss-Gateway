@@ -1231,6 +1231,48 @@ def register_client():
     finally:
         cursor.close()
 
+# curl -X POST https://bliss-gateway.vercel.app/api/activate-account -H "Content-Type: application/json" -d "{\"email\":\"test@example.com\"}"
+@app.route('/api/activate-account', methods=['POST'])
+def activate_account():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip()
+
+        if not email:
+            return jsonify({"status": "error", "message": "Email is required"}), 400
+
+        # Update status to "active"
+        update_query = """
+            UPDATE auth
+            SET status = 'active'
+            WHERE email = %s
+        """
+        cursor.execute(update_query, (email,))
+        db_connection.commit()
+
+        if cursor.rowcount == 0:
+            return jsonify({"status": "error", "message": "No account found with that email"}), 404
+
+        return jsonify({
+            "status": "success",
+            "message": f"Account with email '{email}' activated successfully."
+        }), 200
+
+    except mysql.connector.Error as e:
+        db_connection.rollback()
+        return handle_mysql_error(str(e))
+
+    finally:
+        cursor.close()
+
+
 
 @app.route('/logout', methods=['GET'])
 def logout_user():
