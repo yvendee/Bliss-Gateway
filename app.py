@@ -324,10 +324,10 @@ def create_admin_employees_table():
         CREATE TABLE IF NOT EXISTS admin_employees (
             id INT AUTO_INCREMENT PRIMARY KEY,
             uID TEXT,
-            employee_id TEXT UNIQUE NOT NULL,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            position TEXT NOT NULL,
+            employee_id TEXT,
+            first_name TEXT,
+            last_name TEXT,
+            position TEXT,
             is_used BOOLEAN DEFAULT FALSE
         );
         """
