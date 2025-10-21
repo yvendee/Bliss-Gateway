@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("mark-read-btn")) {
       const notifId = e.target.getAttribute("data-id");
 
-      fetch("/BlissGateways/mark_notification_read.php", { // <-- go up one folder
+      fetch("/api/mark-notification-read", { // <-- go up one folder
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `id=${notifId}`

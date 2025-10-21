@@ -310,6 +310,40 @@ def create_notifications_table():
     finally:
         cursor.close()
 
+@app.route('/api/create-admin-employees-table', methods=['POST'])
+def create_admin_employees_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS admin_employees (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            employee_id TEXT UNIQUE NOT NULL,
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            position TEXT NOT NULL,
+            is_used BOOLEAN DEFAULT FALSE
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({
+            "status": "success",
+            "message": "admin_employees table created successfully with uID as TEXT."
+        }), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 ## ------ insert record ---------------- ##
 @app.route('/insert-mock-auth', methods=['POST'])
@@ -323,7 +357,7 @@ def insert_mock_auth():
 
     try:
         mock_data = {
-            "uID": generate_random_string(12),
+            "uID": "hSONQhOgnFPV",
             "passwordHash": "admin1234",
             "role": "admin",
             "groupId": "group-001",
@@ -374,7 +408,8 @@ def insert_mock_client():
 
     try:
         mock_data = {
-            "uID": generate_random_string(12),
+            # "uID": generate_random_string(12),
+            "uID": "TwneL93Ud2xa",
             "passwordHash": "client1234", 
             "role": "client",
             "groupId": "group-002",
@@ -535,6 +570,85 @@ def insert_mock_notifications():
 
         db_connection.commit()
         return jsonify({"message": "Mock notifications inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+@app.route('/api/insert-admin-employees-mock', methods=['POST'])
+def insert_admin_employees_mock():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+
+        # Mock employee data
+        mock_employees = [
+            {
+                "first_name": "Kay",
+                "last_name": "Dee",
+                "position": "IT Manager",
+                "employee_id": "EMP-A1001"
+            }
+        ]
+
+        # # Mock employee data
+        # mock_employees = [
+        #     {
+        #         "first_name": "Alice",
+        #         "last_name": "Johnson",
+        #         "position": "IT Manager",
+        #         "employee_id": "EMP-A1001"
+        #     },
+        #     {
+        #         "first_name": "Bob",
+        #         "last_name": "Smith",
+        #         "position": "Security Lead",
+        #         "employee_id": "EMP-B2002"
+        #     },
+        #     {
+        #         "first_name": "Charlie",
+        #         "last_name": "Lee",
+        #         "position": "Operations Supervisor",
+        #         "employee_id": "EMP-C3003"
+        #     }
+        # ]
+
+        insert_query = """
+            INSERT INTO admin_employees (uID, employee_id, first_name, last_name, position, is_used)
+            VALUES (%s, %s, %s, %s, %s, FALSE)
+        """
+
+        inserted = 0
+        for emp in mock_employees:
+            # Check for duplicate employee_id
+            cursor.execute("SELECT id FROM admin_employees WHERE employee_id = %s", (emp["employee_id"],))
+            if cursor.fetchone():
+                continue  # Skip if already exists
+
+            # uID = generate_random_string(12)  # Generate 12-char random uID
+            uID = "hSONQhOgnFPV"
+            cursor.execute(insert_query, (
+                uID,
+                emp["employee_id"],
+                emp["first_name"],
+                emp["last_name"],
+                emp["position"]
+            ))
+            inserted += 1
+
+        db_connection.commit()
+        return jsonify({
+            "status": "success",
+            "message": f"{inserted} mock admin_employees inserted."
+        }), 201
 
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
@@ -913,6 +1027,185 @@ def get_notifications():
     finally:
         cursor.close()  # Close the cursor
 
+@app.route('/api/mark-notification-read', methods=['POST'])
+def mark_notification_read():
+    if 'user' not in session:
+        return jsonify({"success": False, "error": "not_logged_in"}), 401
+
+    user_id = session['user']['uID']
+
+    # Accept JSON input
+    data = request.get_json()
+    if not data or 'id' not in data or not isinstance(data['id'], int):
+        return jsonify({"success": False, "error": "invalid_id"}), 400
+
+    notif_id = data['id']
+
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        update_query = """
+        UPDATE notifications
+        SET is_read = 1
+        WHERE id = %s AND uID = %s
+        """
+        cursor.execute(update_query, (notif_id, user_id))
+        db_connection.commit()
+
+        if cursor.rowcount > 0:
+            return jsonify({"success": True}), 200
+        else:
+            return jsonify({"success": False, "error": "not_found_or_not_owner"}), 404
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/api/register-admin', methods=['POST'])
+def register_admin():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    data = request.get_json()
+    first_name = data.get('first_name', '').strip()
+    last_name = data.get('last_name', '').strip()
+    employee_id = data.get('employee_id', '').strip()
+    email = data.get('email', '').strip()
+    password = data.get('password', '').strip()
+    position = data.get('position', '').strip()
+
+    if not all([first_name, last_name, employee_id, email, password, position]):
+        return jsonify({"status": "error", "message": "All fields are required"}), 400
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Check if email already exists
+        cursor.execute("SELECT id FROM auth WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"status": "error", "message": "Email already registered"}), 400
+
+        # Validate employee ID existence and usage
+        cursor.execute("SELECT id, is_used FROM admin_employees WHERE employee_id = %s", (employee_id,))
+        emp_data = cursor.fetchone()
+        if not emp_data:
+            return jsonify({"status": "error", "message": "Invalid Employee ID"}), 400
+        if emp_data[1] == 1:
+            return jsonify({"status": "error", "message": "Employee ID already assigned"}), 400
+
+        # Insert into auth table (no password hashing)
+        insert_auth = """
+            INSERT INTO auth (uID, email, passwordHash, role, userName)
+            VALUES (UUID(), %s, %s, %s, %s)
+        """
+        role = 'admin'
+        userName = f"{first_name} {last_name}"
+        cursor.execute(insert_auth, (email, password, role, userName))
+        db_connection.commit()
+
+        # Get the inserted uID
+        cursor.execute("SELECT uID FROM auth WHERE email = %s", (email,))
+        uID_row = cursor.fetchone()
+        if not uID_row:
+            return jsonify({"status": "error", "message": "Failed to retrieve user ID"}), 500
+        uID = uID_row[0]
+
+        # Update admin_employees table with uID and mark as used
+        update_admin_employee = """
+            UPDATE admin_employees
+            SET uID = %s, first_name = %s, last_name = %s, position = %s, is_used = TRUE
+            WHERE employee_id = %s
+        """
+        cursor.execute(update_admin_employee, (uID, first_name, last_name, position, employee_id))
+        db_connection.commit()
+
+        # Insert a notification
+        notification_message = "Welcome to Bliss Gateways, your admin account has been created!"
+        insert_notification = """
+            INSERT INTO notifications (uID, category, title, message, type)
+            VALUES (%s, 'account', 'Admin Account Created', %s, 'account')
+        """
+        cursor.execute(insert_notification, (uID, notification_message))
+        db_connection.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "Admin account registered successfully",
+            "employee_id": employee_id
+        }), 200
+
+    except mysql.connector.Error as e:
+        db_connection.rollback()
+        return handle_mysql_error(str(e))
+
+    finally:
+        cursor.close()
+
+@app.route('/api/register-client', methods=['POST'])
+def register_client():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    data = request.get_json()
+    first_name = data.get('first_name', '').strip()
+    last_name = data.get('last_name', '').strip()
+    email = data.get('email', '').strip()
+    password = data.get('password', '').strip()
+
+    if not all([first_name, last_name, email, password]):
+        return jsonify({"status": "error", "message": "All fields are required"}), 400
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Check if email already exists
+        cursor.execute("SELECT id FROM auth WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"status": "error", "message": "Email already registered"}), 400
+
+        # Generate uID using your function
+        uID = generate_random_string(12)
+        userName = f"{first_name} {last_name}"
+
+        # Insert into auth (client user, plain password)
+        insert_user = """
+            INSERT INTO auth (uID, email, passwordHash, role, userName)
+            VALUES (%s, %s, %s, 'client', %s)
+        """
+        cursor.execute(insert_user, (uID, email, password, userName))
+        db_connection.commit()
+
+        # Insert notification
+        notification_msg = "Welcome to Bliss Gateways, your account has been created!"
+        insert_notification = """
+            INSERT INTO notifications (uID, category, title, message, type)
+            VALUES (%s, 'account', 'Account Created', %s, 'signup')
+        """
+        cursor.execute(insert_notification, (uID, notification_msg))
+        db_connection.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "Client account created successfully"
+        }), 200
+
+    except mysql.connector.Error as e:
+        db_connection.rollback()
+        return handle_mysql_error(str(e))
+
+    finally:
+        cursor.close()
 
 
 @app.route('/logout', methods=['GET'])

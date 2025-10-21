@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch("client_signup.php", {
+    fetch("/api/register-client", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ first_name: firstName, last_name: lastName, email, password })

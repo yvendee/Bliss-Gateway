@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const res = await fetch('http://localhost/BlissGateways/auth/admin_signup.php', {
+      const res = await fetch('/api/register-admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
