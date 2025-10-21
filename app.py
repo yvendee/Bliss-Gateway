@@ -671,7 +671,7 @@ def show_table_content(table_name):
         # Validate table name to prevent SQL injection (only allow known safe table names)
         allowed_tables = [
             'auth', 'flight_bookings', 'tour_bookings', 'kabayan_bookings', 'itinerary_bookings', 'payments',
-            'subscribers', 'weather_data', 
+            'admin_employees','subscribers', 'weather_data', 
             'evacuation_data', 'flooding_data', 'forecast_data', 'broadcast'
         ]
 
@@ -1102,22 +1102,18 @@ def register_admin():
         if emp_data[1] == 1:
             return jsonify({"status": "error", "message": "Employee ID already assigned"}), 400
 
+        # Generate uID using your custom function
+        uID = generate_random_string(12)
+        userName = f"{first_name} {last_name}"
+        role = 'admin'
+
         # Insert into auth table (no password hashing)
         insert_auth = """
             INSERT INTO auth (uID, email, passwordHash, role, userName)
-            VALUES (UUID(), %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s)
         """
-        role = 'admin'
-        userName = f"{first_name} {last_name}"
-        cursor.execute(insert_auth, (email, password, role, userName))
+        cursor.execute(insert_auth, (uID, email, password, role, userName))
         db_connection.commit()
-
-        # Get the inserted uID
-        cursor.execute("SELECT uID FROM auth WHERE email = %s", (email,))
-        uID_row = cursor.fetchone()
-        if not uID_row:
-            return jsonify({"status": "error", "message": "Failed to retrieve user ID"}), 500
-        uID = uID_row[0]
 
         # Update admin_employees table with uID and mark as used
         update_admin_employee = """
@@ -1149,6 +1145,7 @@ def register_admin():
 
     finally:
         cursor.close()
+
 
 @app.route('/api/register-client', methods=['POST'])
 def register_client():
