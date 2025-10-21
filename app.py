@@ -657,6 +657,34 @@ def insert_admin_employees_mock():
         cursor.close()
 
 
+## ------ delete records ---------------- ##
+@app.route('/delete-notifications-table', methods=['POST'])
+def delete_notifications_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        drop_table_query = "DROP TABLE IF EXISTS notifications;"
+        cursor.execute(drop_table_query)
+        db_connection.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "notifications table deleted successfully."
+        }), 200
+
+    except mysql.connector.Error as e:
+        db_connection.rollback()
+        return handle_mysql_error(str(e))
+
+    finally:
+        cursor.close()
+
+
 ## ------ show records ---------------- ##
 @app.route('/show-table/<table_name>', methods=['GET'])
 def show_table_content(table_name):
