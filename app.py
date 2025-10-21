@@ -671,8 +671,7 @@ def show_table_content(table_name):
         # Validate table name to prevent SQL injection (only allow known safe table names)
         allowed_tables = [
             'auth', 'flight_bookings', 'tour_bookings', 'kabayan_bookings', 'itinerary_bookings', 'payments',
-            'admin_employees','subscribers', 'weather_data', 
-            'evacuation_data', 'flooding_data', 'forecast_data', 'broadcast'
+            'admin_employees','notifications'
         ]
 
         if table_name not in allowed_tables:
