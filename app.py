@@ -310,7 +310,7 @@ def create_notifications_table():
     finally:
         cursor.close()
 
-@app.route('/api/create-admin-employees-table', methods=['POST'])
+@app.route('/create-admin-employees-table', methods=['POST'])
 def create_admin_employees_table():
     if not is_mysql_available():
         return handle_mysql_error("MySQL not available")
@@ -578,7 +578,7 @@ def insert_mock_notifications():
         cursor.close()
 
 
-@app.route('/api/insert-admin-employees-mock', methods=['POST'])
+@app.route('/insert-admin-employees-mock', methods=['POST'])
 def insert_admin_employees_mock():
     if not is_mysql_available():
         return handle_mysql_error("MySQL not available")
