@@ -788,7 +788,7 @@ def client_bookings_page():
     return render_template("client/client_bookings.html")
 
 @app.route("/client-itineraries")
-def client_bookings_page():
+def client_itineraries_page():
     # Render the HTML template for the /ui route
     return render_template("client/client_itineraries.html")
 
