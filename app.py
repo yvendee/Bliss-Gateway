@@ -776,6 +776,28 @@ def client_notif_page():
     # Render the HTML template for the /ui route
     return render_template("client/client_notif.html")
 
+
+@app.route("/client-profile")
+def client_profile_page():
+    # Render the HTML template for the /ui route
+    return render_template("client/client_profile.html")
+
+@app.route("/client-bookings")
+def client_bookings_page():
+    # Render the HTML template for the /ui route
+    return render_template("client/client_bookings.html")
+
+@app.route("/client-itineraries")
+def client_bookings_page():
+    # Render the HTML template for the /ui route
+    return render_template("client/client_itineraries.html")
+
+@app.route("/client-feedback")
+def client_feedback_page():
+    # Render the HTML template for the /ui route
+    return render_template("client/client_feedback.html")
+
+
 @app.route("/admin-sidebar")
 def admin_sidebar_page():
     # Render the HTML template for the /ui route
