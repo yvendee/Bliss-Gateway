@@ -733,6 +733,10 @@ def about_page():
     # Render the HTML template for the /ui route
     return render_template("about.html")
 
+@app.route("/about-us")
+def aboutus_page():
+    # Render the HTML template for the /ui route
+    return render_template("about.html")
 
 @app.route("/admin-dashboard")
 def admin_dashboard_page():
@@ -816,6 +820,7 @@ def forgot_password_page():
 # templates\admin\admin_profile.html
 
 # templates\client\client_sidebar.html
+# templates\client\client_profile.html
 
 @app.route("/header")
 def header_page():

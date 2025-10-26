@@ -1,0 +1,149 @@
+/* General Body Styles */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main Dashboard Container */
+.client-dashboard {
+  display: flex;
+  flex-direction: row;        
+  flex: 1 0 auto;            
+  width: 100%;
+  align-items: stretch;        
+  padding: 0 0 0 70px;        
+  height: 750px; 
+}
+
+/* Main Content Styles */
+.dashboard-main {
+  flex: 1;
+  background: #fff;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.dashboard-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+/* Filter Container Styles */
+.filter-container {
+  margin-bottom: 20px;
+  justify-content: flex-start;
+  background-color: #d6f3ff;
+  border: 1px solid #d3d3d3;
+  padding: 12px;
+  margin-left: 20px;
+}
+
+.filter-menu {
+  display: flex;
+  gap: 10px; 
+}
+
+.filter-button {
+  padding: 6px 25px;
+  border: 1px solid #d3d3d3;
+  border-radius: 25px; 
+  width: 150px;
+  background-color: #f4f7fc;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  margin-left: 30px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #008ec4; 
+  color: #fff;
+}
+
+.filter-button.active {
+  background-color: #008ec4; 
+  color: white; 
+}
+
+/* Bookings Section */
+.bookings-section {
+  margin-top: 20px;
+}
+
+/* Bookings Container */
+.bookings-container {
+  max-height: 600px; 
+  border: 1px solid #d3d3d3;
+  height: 540px;
+  margin-left: 20px;
+}
+
+/* Bookings Table Styles */
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+.bookings-table th, .bookings-table td {
+  padding: 10px;
+  font-size: 12px;
+  text-align: center; 
+}
+
+.bookings-table th {
+  background-color: #d6f3ff;
+  font-weight: 700;
+  font-size: 13px;
+  margin: 0; 
+}
+
+.bookings-table tr:nth-child(even) {
+  background-color: #f4f7fc;
+}
+
+.bookings-table tr:hover {
+  background-color: #e0f7fa; 
+}
+
+/* Scrollbar Styling */
+.bookings-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bookings-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.bookings-container::-webkit-scrollbar-thumb {
+  background-color: #0ea5e9;
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+.bookings-container::-webkit-scrollbar-thumb:hover {
+  background-color: #0284c7;
+}
+
+/* Empty Message */
+.empty-message {
+  text-align: center;
+  font-style: italic;
+  color: #757575;
+  padding: 20px;
+  font-size: 13px;
+  display: none;
+}
+
+.footer {
+  flex-shrink: 0; 
+  padding: 20px;
+  width: 100%;
+  margin-top: auto; 
+}

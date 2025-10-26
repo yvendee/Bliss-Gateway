@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Itineraries - Bliss Gateways</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/client/client_itineraries.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/client/client_sidebar.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/logout.css") }}'>
+
+</head>
+<body>
+
+  <div id="header-container"></div>
+
+  <main class="client-dashboard">
+    <section class="dashboard-main" style="height: 600px;">
+      <h2 class="dashboard-title">My Itineraries</h2>
+      <div class="itineraries-section">
+        <div class="filter-container">
+          <div class="filter-menu">
+            <button class="filter-button active">All Itineraries</button>
+            <button class="filter-button">Completed</button>
+          </div>
+        </div>
+        <div class="itineraries-container" id="itinerariesContainer">
+          <table class="itineraries-table">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Created</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Boracay</td>
+                <td>June 10, 2025</td>
+                <td>5 days</td>
+                <td>Pending</td>
+                <td class="action-icons">
+                  <img src='{{ url_for("static", filename="icons/edit.png") }}' alt="Edit" title="Edit" />
+                  <img src='{{ url_for("static", filename="icons/trash.png") }}'  alt="Delete" title="Delete" />
+                </td>
+              </tr>
+              <tr>
+                <td>South Korea</td>
+                <td>April 15, 2025</td>
+                <td>6 days</td>
+                <td>Completed</td>
+                <td class="action-icons">
+                  <img src='{{ url_for("static", filename="icons/edit.png") }}'  alt="Edit" title="Edit" />
+                  <img src='{{ url_for("static", filename="icons/trash.png") }}' alt="Delete" title="Delete" />
+                </td>
+              </tr>
+              <tr>
+                <td>Abu Dhabi</td>
+                <td>March 21, 2025</td>
+                <td>4 days</td>
+                <td>Pending</td>
+                <td class="action-icons">
+                  <img src='{{ url_for("static", filename="icons/edit.png") }}'  alt="Edit" title="Edit" />
+                  <img src='{{ url_for("static", filename="icons/trash.png") }}' alt="Delete" title="Delete" />
+                </td>
+              </tr>
+              <tr>
+                <td>March 31, 2025</td>
+                <td>March 31, 2025</td>
+                <td>6 days</td>
+                <td>Completed</td>
+                <td class="action-icons">
+                  <img src='{{ url_for("static", filename="icons/edit.png") }}'  alt="Edit" title="Edit" />
+                  <img src='{{ url_for("static", filename="icons/trash.png") }}' alt="Delete" title="Delete" />
+                </td>
+              </tr>
+              <tr>
+                <td>Singapore</td>
+                <td>January 15, 2025</td>
+                <td>5 days</td>
+                <td>Completed</td>
+                <td class="action-icons">
+                  <img src='{{ url_for("static", filename="icons/edit.png") }}'  alt="Edit" title="Edit" />
+                  <img src='{{ url_for("static", filename="icons/trash.png") }}' alt="Delete" title="Delete" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="empty-message" style="display: none;">No itineraries yet.</div>
+      </div>
+    </section>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal-container modal-hidden">
+      <div class="modal-content">
+        <p id="editMessage">Edit itinerary for:</p>
+        <input type="text" id="editInput" placeholder="Enter new itinerary details" />
+        <div class="modal-buttons">
+          <button id="confirmEdit" class="btn-confirm">Save</button>
+          <button id="cancelEdit" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-container modal-hidden">
+      <div class="modal-content">
+        <p id="deleteMessage">Are you sure you want to delete this itinerary?</p>
+        <div class="modal-buttons">
+          <button id="confirmDelete" class="btn-confirm">Yes</button>
+          <button id="cancelDelete" class="btn-cancel">No</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="client_sidebar"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+      </div>
+      <div class="footer-column">
+        <h3>Business Hours</h3>
+        <p>Monday - Saturday</p>
+        <p>8:00 AM to 5:00 PM</p>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <p>0912 988 7893</p>
+        <p>blissgatewaysph@gmail.com</p>
+        <p>San Nicolas, Baao, Camarines Sur</p>
+        <p>4432 Philippines</p>
+      </div>
+      <div class="footer-column">
+        <h3>Connect With Us</h3>
+        <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
+        <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
+        <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
+      </div>
+    </div>
+
+    <hr class="footer-separator" />
+
+    <div class="footer-bottom">
+      <p>© Bliss Gateways Travel and Tours 2025</p>
+      <p>Developed by Systematic Thinkers</p>
+    </div>
+  </footer>
+
+  <script src='{{ url_for("static", filename="js/client/client_itineraries.js") }}'></script>
+  <script src='{{ url_for("static", filename="js/index.js") }}'></script>
+  <script src='{{ url_for("static", filename="js/logout.js") }}'></script>
+  <script src='{{ url_for("static", filename="js/script.js") }}'></script>
+  <script src='{{ url_for("static", filename="js/header_load.js") }}' ></script>
+  <script src='{{ url_for("static", filename="js/client/client_sidebar.js") }}' defer></script>
+
+  
+</body>
+</html>

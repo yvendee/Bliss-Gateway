@@ -1,0 +1,150 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Feedback | Bliss Gateways</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/client/client_bookings.css") }}'>
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/client/client_sidebar.css") }}'>
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/logout.css") }}'>
+
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main class="client-dashboard">
+    <div class="feedback-main">
+        <h2>My Feedback</h2>
+
+        <div class="filter-container">
+            <div class="filter-menu">
+                <button class="filter-button active" onclick="filterFeedback('all')">All Feedbacks</button>
+                <button class="filter-button" onclick="filterFeedback('with-replies')">With Replies</button>
+            </div>
+        </div>
+
+        <div class="feedback-list">
+            <div class="feedback-item">
+                <h3 class="customer-name">Boracay Adventure</h3>
+                <p><strong>Customer Service:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Accommodation:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Itinerary:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Value for Money:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Overall Experience:</strong> 
+                    <span class="stars">★★★★☆</span> 
+                </p>
+                <p><strong>Describe your Overall Experience:</strong> I really like it!
+                <p><strong>Suggestions for Improvement:</strong> More activities would be nice.</p>
+            </div>
+
+            <div class="feedback-item">
+                <h3 class="customer-name">South Korea Tour</h3>
+                <p><strong>Customer Service:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Accommodation:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Itinerary:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Value for Money:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Overall Experience:</strong> 
+                    <span class="stars">★★★★★</span> 
+                <p><strong>Describe your Overall Experience:</strong> Fantastic! Highly recommend.
+                </p>
+                <div class="reply-container">
+                    <p class="reply-info"><strong>Bliss Gateways:</strong> </p>
+                    <p class="reply-message">Thank you for your kind words! We're thrilled to hear that you found our travel management system user-friendly. We're also currently working on a mobile app to enhance accessibility, so stay tuned for that!</p>
+                </div>
+            </div>
+
+            <div class="feedback-item">
+                <h3 class="customer-name">Singapore Trip</h3>
+                <p><strong>Customer Service:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Accommodation:</strong> 
+                    <span class="stars">★★★★★</span>
+                </p>
+                <p><strong>Itinerary:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Value for Money:</strong> 
+                    <span class="stars">★★★★☆</span>
+                </p>
+                <p><strong>Overall Experience:</strong> 
+                    <span class="stars">★★★★☆</span> 
+                <p><strong>Describe your Overall Experience:</strong> Enjoyed the trip, but had issues with one of the accommodations.
+                </p>
+                <div class="reply-container">
+                    <p class="reply-author"><strong>Bliss Gateways:</strong></p>
+                    <p class="reply-message">We're looking into the accommodation issue. Thank you for your patience!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="client_sidebar"></div>
+</main>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/services">Services</a>
+            <a href="/about">About Us</a>
+        </div>
+        <div class="footer-column">
+            <h3>Business Hours</h3>
+            <p>Monday - Saturday</p>
+            <p>8:00 AM to 5:00 PM</p>
+        </div>
+        <div class="footer-column">
+            <h3>Contact Us</h3>
+            <p>0912 988 7893</p>
+            <p>blissgatewaysph@gmail.com</p>
+            <p>San Nicolas, Baao, Camarines Sur</p>
+            <p>4432 Philippines</p>
+        </div>
+        <div class="footer-column">
+            <h3>Connect With Us</h3>
+            <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
+            <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
+            <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
+        </div>
+    </div>
+
+    <hr class="footer-separator" />
+
+    <div class="footer-bottom">
+        <p>© Bliss Gateways Travel and Tours 2025</p>
+        <p>Developed by Systematic Thinkers</p>
+    </div>
+</footer>
+
+
+<script src='{{ url_for("static", filename="js/client/client_feedback.js") }}'></script>
+<script src='{{ url_for("static", filename="js/header_load.js") }}' defer></script>
+<script src='{{ url_for("static", filename="js/client/client_sidebar.js") }}' defer></script>
+
+
+</body>
+</html>

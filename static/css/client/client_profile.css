@@ -1,0 +1,163 @@
+.client-dashboard {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  align-items: stretch;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 30px;
+  margin-left: 90px;
+  box-sizing: border-box;
+}
+
+.dashboard-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-title h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button, .save-button {
+  padding: 5px 45px;
+  background-color: #008ec4;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.edit-button:hover, .save-button:hover {
+  background-color: #006fa1;
+}
+
+/* Profile Sections */
+.profile-sections {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Personal Info */
+.personal-info-container {
+  flex: 2;
+  min-width: 500px;
+  background: #f8fdff;
+  border: 1px solid #d3d3d3;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.personal-info-container h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.personal-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Account Settings */
+.account-settings {
+  flex: 1;
+  min-width: 250px;
+  max-width: 30%;
+  background: #f8fdff;
+  border: 1px solid #d3d3d3;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.account-settings h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Inputs */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+input, select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  border-color: #008ec4;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0,142,196,0.4);
+}
+
+/* Profile Pic */
+.profile-pic-container {
+  position: relative;
+  width: 100px; 
+  height: 100px; 
+  margin: 50px auto; 
+  border-radius: 50%; 
+  overflow: hidden;
+  background: #e6f4fb; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Placeholder Avatar */
+.profile-pic.placeholder {
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+/* Actual Avatar */
+.profile-pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.upload-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0; 
+  cursor: pointer; 
+}
+
+.footer {
+  flex-shrink: 0; 
+  padding: 20px;
+  width: 100%;
+  margin-top: auto; 
+}
