@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add/Edit Tour | Bliss Gateways</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="add_tour.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main>
+<form id="tourForm" enctype="multipart/form-data" onsubmit="event.preventDefault(); saveForm();">
+
+    <div class="location-tour">
+        <strong id="locationField" class="editable" onclick="makeEditable(this)">Location ✎<span class="required">*</span></strong>
+        <select id="tourType" name="tour_type" required>
+            <option value="" disabled selected hidden>Select tour type *</option>
+            <option value="Domestic">Domestic</option>
+            <option value="International">International</option>
+        </select>
+    </div>
+
+    <!-- Images -->
+    <div class="image-grid">
+        <div class="main-image">
+            <img id="mainImage" alt="Main Image" style="display:none;" />
+            <button type="button" class="remove-image" style="display:none;" onclick="removeImage('mainImage','mainImageInput')">✖</button>
+            <div class="file-input-wrapper">
+                <input type="file" id="mainImageInput" name="main_image" accept="image/*" required onchange="previewImage(event,'mainImage','mainImageInput')">
+                <span class="file-label">Upload Image*</span>
+            </div>
+        </div>
+
+        <div class="side-images">
+            <div>
+                <img id="sideImage1" alt="Side Image 1" style="display:none;">
+                <button type="button" class="remove-image" style="display:none;" onclick="removeImage('sideImage1','sideImageInput1')">✖</button>
+                <div class="file-input-wrapper">
+                    <input type="file" id="sideImageInput1" name="side_image1" accept="image/*" onchange="previewImage(event,'sideImage1','sideImageInput1')">
+                    <span class="file-label">Upload Image</span>
+                </div>
+            </div>
+            <div>
+                <img id="sideImage2" alt="Side Image 2" style="display:none;">
+                <button type="button" class="remove-image" style="display:none;" onclick="removeImage('sideImage2','sideImageInput2')">✖</button>
+                <div class="file-input-wrapper">
+                    <input type="file" id="sideImageInput2" name="side_image2" accept="image/*" onchange="previewImage(event,'sideImage2','sideImageInput2')">
+                    <span class="file-label">Upload Image</span>
+                </div>
+            </div>
+            <div>
+                <img id="sideImage3" alt="Side Image 3" style="display:none;">
+                <button type="button" class="remove-image" style="display:none;" onclick="removeImage('sideImage3','sideImageInput3')">✖</button>
+                <div class="file-input-wrapper">
+                    <input type="file" id="sideImageInput3" name="side_image3" accept="image/*" onchange="previewImage(event,'sideImage3','sideImageInput3')">
+                    <span class="file-label">Upload Image</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour Info -->
+    <div class="section flex-between">
+        <h2 id="tourNameField" class="editable" onclick="makeEditable(this)">Tour Name ✎<span class="required">*</span></h2>
+        <strong id="priceField" class="price editable" onclick="makeEditable(this)">₱0.00 ✎<span class="required">*</span></strong>
+    </div>
+
+    <div class="section flex-between">
+        <p id="minBookingsField" class="editable2" onclick="makeEditable(this)">
+            Minimum number of bookings: 1 ✎<span class="required">*</span>
+        </p>
+        <p>per person</p>
+    </div>
+
+    <!-- Dates -->
+    <div class="check-dates">
+        <label>Check-in Date
+            <input type="date" id="checkIn" name="check_in">
+        </label>
+        <label>Check-out Date
+            <input type="date" id="checkOut" name="check_out">
+        </label>
+    </div>
+
+    <!-- Hotel -->
+    <div class="hotel-room">
+        <label>Hotel Name
+            <input type="text" id="hotelName" name="hotel_name" placeholder="Enter hotel name">
+        </label>
+        <label>Room Type
+            <input type="text" id="roomType" name="room_type" placeholder="Enter room type">
+        </label>
+    </div>
+
+    <!-- Other fields -->
+    <div class="field">
+        <label for="flightInfo">Flight Information</label>
+        <textarea id="flightInfo" name="flight_info" placeholder="Enter flight details"></textarea>
+    </div>
+
+    <div class="field">
+        <label for="overview">Overview<span class="required">*</span></label>
+        <textarea id="overview" name="overview" placeholder="Enter overview..." required></textarea>
+    </div>
+
+    <div class="field">
+        <label for="inclusions">Package Inclusions</label>
+        <textarea id="inclusions" name="inclusions" placeholder="Enter inclusions..."></textarea>
+    </div>
+    <div class="field">
+        <label for="exclusions">Package Exclusions</label>
+        <textarea id="exclusions" name="exclusions" placeholder="Enter exclusions..."></textarea>
+    </div>
+
+    <div class="field">
+        <label for="itinerary">Itinerary</label>
+        <textarea id="itinerary" name="itinerary" placeholder="Enter itinerary details"></textarea>
+    </div>
+
+    <!-- Meeting / Pickup -->
+    <div class="section">
+        <strong>Meeting and Pickup</strong>
+        <div class="pickup-details">
+            <div class="pickup-column meeting-point">
+                <img src="../assets/icons/pin.png" class="pickup-icon">
+                <div>
+                    <strong>Meeting Point:</strong>
+                    <textarea id="meetingPoint" name="meeting_point" placeholder="Add description..."></textarea>
+                </div>
+            </div>
+            <div class="separator"></div>
+            <div class="pickup-column end-point">
+                <img src="../assets/icons/end.png" class="pickup-icon">
+                <div>
+                    <strong>End Point:</strong>
+                    <textarea id="endPoint" name="end_point" placeholder="Add description..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <label for="pickup-details">Pickup Details</label>
+        <textarea id="pickup-details" name="pickup_details" placeholder="Enter pickup details..."></textarea>
+    </div>
+
+    <div class="field">
+        <label for="importantNotes">Important Notes</label>
+        <textarea id="importantNotes" name="important_notes" placeholder="Enter important notes"></textarea>
+    </div>
+
+    <button type="submit" class="save-btn">Save Changes</button>
+</form>
+</main>
+
+<div id="popup" class="popup"></div>
+
+<footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About Us</a>
+      </div>
+      <div class="footer-column">
+        <h3>Business Hours</h3>
+        <p>Monday - Saturday</p>
+        <p>8:00 AM to 5:00 PM</p>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <p>0912 988 7893</p>
+        <p>blissgatewaysph@gmail.com</p>
+        <p>San Nicolas, Baao, Camarines Sur</p>
+        <p>4432 Philippines</p>
+      </div>
+      <div class="footer-column">
+        <h3>Connect With Us</h3>
+        <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
+        <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
+        <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
+      </div>
+    </div>
+    <hr class="footer-separator" />
+    <div class="footer-bottom">
+      <p>© Bliss Gateways Travel and Tours 2025</p>
+      <p>Developed by Systematic Thinkers</p>
+    </div>
+</footer>
+
+<script src="add_tour.js"></script>
+<script src="../script.js"></script>
+<script src="../header_load.js"></script>
+
+</body>
+</html>

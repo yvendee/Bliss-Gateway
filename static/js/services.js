@@ -3,10 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const userRole = (localStorage.getItem("userRole") || "").toLowerCase();
 
   const services = [
-    { clientHref: "flights.html", adminHref: "flights.html" },
-    { clientHref: "tour_booking.html", adminHref: "tours/create.html" },
-    { clientHref: "kabayan.html", adminHref: "create copy.html" },
-    { clientHref: "itinerary.html", adminHref: "itinerary.html" }
+    { clientHref: "/flights", adminHref: "/flights" },
+    { clientHref: "/tour-booking", adminHref: "/tour/create" },
+    { clientHref: "/kabayan", adminHref: "/kabayan/create" },
+    { clientHref: "/itinerary", adminHref: "/itinerary" }
   ];
 
   const actionButtons = document.querySelectorAll(".select-button");

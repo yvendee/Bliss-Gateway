@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flights | Bliss Gateways</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+  <link rel="stylesheet" href='{{ url_for("static", filename="css/flights.css") }}'>
+</head>
+<body>
+
+<div id="header-container"></div>
+
+<main class="flights-page">
+
+  <section class="flights-header">
+    <div class="flights-logo-title">
+      <img src='{{ url_for("static", filename="icons/plane.png") }}'  alt="Flights Logo" class="flights-logo">
+      <div>
+        <h2>Search Flights</h2>
+        <p class="flights-subtitle">Find and book your perfect flight.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Bar -->
+  <section class="search-bar">
+    <div class="search-row">
+      <div class="field">
+        <label>From</label>
+        <input id="fromInput" placeholder="City/Airport" autocomplete="off" />
+        <ul id="fromInput-suggestions" class="suggestions"></ul>
+      </div>
+      <div class="field">
+        <label>To</label>
+        <input id="toInput" placeholder="City/Airport" autocomplete="off" />
+        <ul id="toInput-suggestions" class="suggestions"></ul>
+      </div>
+
+      <div class="field">
+        <label>Depart</label>
+        <input id="departDate" type="date" />
+      </div>
+      <div class="field">
+        <label>Return</label>
+        <input id="returnDate" type="date" />
+      </div>
+
+      <!-- Travelers Dropdown -->
+      <div class="field">
+        <label>Travelers</label>
+        <div class="traveler-dropdown">
+          <button class="traveler-toggle" id="travelerToggle">1 Adult</button>
+          <div class="traveler-options" id="travelerOptions">
+            <div class="traveler-item">
+              <div><b>Adult</b><br><small>12+ years old</small></div>
+              <input type="number" id="adultCount" value="1" min="1" max="10">
+            </div>
+            <div class="traveler-item">
+              <div><b>Children</b><br><small>2-11 years old</small></div>
+              <input type="number" id="childCount" value="0" min="0" max="10">
+            </div>
+            <div class="traveler-item">
+              <div><b>Infant</b><br><small>Under 2 years old</small></div>
+              <input type="number" id="infantCount" value="0" min="0" max="10">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field action">
+        <button id="searchBtn">Search</button>
+      </div>
+    </div>
+
+    <!-- Trip Type -->
+    <div class="trip-type">
+      <input type="radio" name="tripType" value="oneway" id="oneWay" checked> <label for="oneWay">One-Way</label>
+      <input type="radio" name="tripType" value="roundtrip" id="roundTrip"> <label for="roundTrip">Round Trip</label>
+    </div>
+  </section>
+
+  <section class="results-and-filter">
+
+    <!-- Sidebar -->
+    <aside class="left-filter">
+      <h4>Sort By</h4>
+      <select id="sortSelect" class="custom-select">
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+        <option value="depart_asc">Departure: Earliest</option>
+        <option value="arrival_asc">Arrival: Earliest</option>
+      </select>
+
+      <hr/>
+      <h4>Airlines</h4>
+      <div id="airlinesList">
+        <label><input type="checkbox" value="PR"> Philippine Airlines</label>
+        <label><input type="checkbox" value="5J"> Cebu Pacific</label>
+        <label><input type="checkbox" value="DG"> AirAsia</label>
+      </div>
+
+      <hr/>
+      <h4>Time of Flight</h4>
+      <label>Departure:</label>
+      <input type="range" id="depTimeSlider" min="0" max="1439" step="15">
+      <div id="depTimeDisplay" class="slider-current-time">12:00 AM</div>
+      
+      <label>Arrival:</label>
+      <input type="range" id="arrTimeSlider" min="0" max="1439" step="15">
+      <div id="arrTimeDisplay" class="slider-current-time">11:59 PM</div>
+      
+      <hr/>
+      <h4>Price (₱)</h4>
+      <input type="range" id="priceSlider" min="500" max="30000" step="500">
+      <div id="priceDisplay" class="slider-current-time">₱30000</div>
+
+      <hr/>
+      <h4>Class</h4>
+      <select id="cabinClass" class="custom-select">
+        <option value="">All</option>
+        <option value="ECONOMY">Economy</option>
+        <option value="BUSINESS">Business</option>
+        <option value="FIRST">First</option>
+      </select>
+
+      <div class="field action reset-button">
+        <button id="resetFiltersBtn">Reset Filters</button>
+      </div>
+    </aside>
+
+    <!-- Flight Results -->
+    <section class="results">
+      <div id="flightsDateContainer" class="flight-date-container"></div>
+      <div id="flightsContainer" class="flight-list"></div>
+    </section>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <a href="/">Home</a>
+      <a href="/services">Services</a>
+      <a href="/about">About Us</a>
+    </div>
+    <div class="footer-column">
+      <h3>Business Hours</h3>
+      <p>Monday - Saturday</p>
+      <p>8:00 AM to 5:00 PM</p>
+    </div>
+    <div class="footer-column">
+      <h3>Contact Us</h3>
+      <p>0912 988 7893</p>
+      <p>blissgatewaysph@gmail.com</p>
+      <p>San Nicolas, Baao, Camarines Sur</p>
+      <p>4432 Philippines</p>
+    </div>
+    <div class="footer-column">
+      <h3>Connect With Us</h3>
+      <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
+      <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
+      <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
+    </div>
+  </div>
+
+  <hr class="footer-separator" />
+  <div class="footer-bottom">
+    <p>© Bliss Gateways Travel and Tours 2025</p>
+    <p>Developed by Systematic Thinkers</p>
+  </div>
+</footer>
+
+
+<script src='{{ url_for("static", filename="js/header_load.js") }}'>
+</script>
+<script src='{{ url_for("static", filename="js/flights.js") }}'>
+</script>
+
+</body>
+</html>

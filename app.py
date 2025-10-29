@@ -797,6 +797,48 @@ def client_feedback_page():
     # Render the HTML template for the /ui route
     return render_template("client/client_feedback.html")
 
+@app.route("/flights")
+def flights_page():
+    # Render the HTML template for the /ui route
+    return render_template("flights.html")
+
+@app.route("/tour-booking")
+def tour_booking_page():
+    # Render the HTML template for the /ui route
+    return render_template("tour_booking.html")
+
+@app.route("/tour/create")
+def tour_create_page():
+    # Render the HTML template for the /ui route
+    return render_template("tour/create.html")
+
+@app.route("/tour/add")
+def tour_add_page():
+    # Render the HTML template for the /ui route
+    return render_template("tour/add_tour.html")
+
+
+@app.route("/kabayan")
+def kabayan_page():
+    # Render the HTML template for the /ui route
+    return render_template("kabayan/kabayan.html")
+
+@app.route("/add-kabayan")
+def add_kabayan_page():
+    # Render the HTML template for the /ui route
+    return render_template("kabayan/add_kabayan.html")
+
+@app.route("/kabayan/create")
+def kabayan_create_page():
+    # Render the HTML template for the /ui route
+    return render_template("kabayan/create.html")
+
+@app.route("/itinerary")
+def itinerary_create_page():
+    # Render the HTML template for the /ui route
+    return render_template("itinerary.html")
+
+ 
 
 @app.route("/admin-sidebar")
 def admin_sidebar_page():
@@ -832,6 +874,7 @@ def forgot_password_page():
     return render_template("auth/forgot_password.html")
 
 
+
 # static\js\auth\client_signup.js
 # static\js\auth\login.js
 # static\js\auth\admin_signup.js
@@ -843,6 +886,8 @@ def forgot_password_page():
 
 # templates\client\client_sidebar.html
 # templates\client\client_profile.html
+# static\js\tour\create.js
+# static\js\kabayan\kabayan.js
 
 @app.route("/header")
 def header_page():
@@ -1305,6 +1350,9 @@ def activate_account():
     finally:
         cursor.close()
 
+@app.route("/api/get-tours")
+def forgot_password_page():
+    return jsonify({"success": True}), 200
 
 
 @app.route('/logout', methods=['GET'])

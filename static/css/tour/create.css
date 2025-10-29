@@ -1,0 +1,156 @@
+/* ===== Tours Page ===== */
+.tours-page {
+  padding: 50px 20px;
+  text-align: left;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 90px;
+}
+
+.title-with-icon {
+  display: flex;
+  gap: 10px;
+  margin-left: 35px;
+}
+
+.title-with-icon img {
+  width: 40px;
+  height: 40px;
+}
+
+/* ===== Empty State ===== */
+.empty-package {
+  background-color: #f1f1f1;
+  width: 1000px;
+  height: 335px;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(82, 82, 82, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.pin2-icon {
+  width: 90px;
+  margin-bottom: 20px;
+}
+
+.create-package-btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 10px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.create-package-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Filters & Add Button */
+.filter-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-section select,
+.add-package-btn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.add-package-btn {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.add-package-btn:hover {
+  background-color: #f4f4f4;
+}
+
+/* ===== Tours Grid ===== */
+#tours-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 30px;
+  padding: 20px 80px;
+  justify-items: center;
+}
+
+/* ===== Tour Card ===== */
+.tour-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  width: 250px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tour-card .tour-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.tour-details {
+  padding: 10px;
+}
+
+.tour-details h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #091d46;
+  margin: 0 0 5px;
+}
+
+.tour-price {
+  color: #008EC4;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tour-inclusions,
+.tour-exclusions {
+  padding: 0 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.see-more-btn {
+  margin: 10px auto 20px;
+  padding: 6px 30px;
+  background-color: #008EC4;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+}
+
+.see-more-btn:hover {
+  background-color: #091d46;
+}
