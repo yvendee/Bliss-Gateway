@@ -1351,7 +1351,7 @@ def activate_account():
         cursor.close()
 
 @app.route("/api/get-tours")
-def forgot_password_page():
+def get_tours():
     return jsonify({"success": True}), 200
 
 
