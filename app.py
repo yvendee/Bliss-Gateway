@@ -19,6 +19,8 @@ from io import BytesIO
 from werkzeug.utils import secure_filename
 
 
+
+
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'gif'}
 
@@ -344,6 +346,55 @@ def create_admin_employees_table():
     finally:
         cursor.close()
 
+@app.route('/create-tours-table', methods=['POST'])
+def create_tours_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS tours (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            tour_name TEXT,
+            location TEXT,
+            tour_type TEXT,
+            price TEXT,
+            min_bookings INT,
+            check_in_date DATETIME,
+            check_out_date DATETIME,
+            hotel_name TEXT,
+            room_type TEXT,
+            overview TEXT,
+            inclusions TEXT,
+            exclusions TEXT,
+            flight_information TEXT,
+            itinerary TEXT,
+            important_notes TEXT,
+            meeting_point TEXT,
+            end_point TEXT,
+            pickup_details TEXT,
+            main_image TEXT,
+            side_image1 TEXT,
+            side_image2 TEXT,
+            side_image3 TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "tours table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 ## ------ insert record ---------------- ##
 @app.route('/insert-mock-auth', methods=['POST'])
@@ -657,6 +708,85 @@ def insert_admin_employees_mock():
         cursor.close()
 
 
+@app.route('/insert-mock-tour', methods=['POST'])
+def insert_mock_tour():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Mockup data for the tour
+        mock_data = {
+            "tour_name": "Grand European Tour",
+            "location": "Europe",
+            "tour_type": "Guided",
+            "price": "499.99",
+            "min_bookings": random.randint(5, 20),
+            "check_in_date": (datetime.now() + timedelta(days=random.randint(30, 60))).strftime('%Y-%m-%d %H:%M:%S'),
+            "check_out_date": (datetime.now() + timedelta(days=random.randint(60, 90))).strftime('%Y-%m-%d %H:%M:%S'),
+            "hotel_name": "Luxury Hotel",
+            "room_type": "Deluxe Suite",
+            "overview": "A journey through the most beautiful cities in Europe.",
+            "inclusions": "Accommodation, Transport, Guide, Meals",
+            "exclusions": "Flights, Travel Insurance",
+            "flight_information": "Direct flights from NYC",
+            "itinerary": "Day 1: Paris, Day 2: Rome, Day 3: London",
+            "important_notes": "Visa required for some countries.",
+            "meeting_point": "Hotel Lobby",
+            "end_point": "Airport",
+            "pickup_details": "Pick-up at 9 AM from the hotel",
+            "main_image": "https://example.com/main_image.jpg",
+            "side_image1": "https://example.com/side_image1.jpg",
+            "side_image2": "https://example.com/side_image2.jpg",
+            "side_image3": "https://example.com/side_image3.jpg"
+        }
+
+        insert_query = """
+        INSERT INTO tours (
+            tour_name, location, tour_type, price, min_bookings, check_in_date, check_out_date, hotel_name, 
+            room_type, overview, inclusions, exclusions, flight_information, itinerary, important_notes, 
+            meeting_point, end_point, pickup_details, main_image, side_image1, side_image2, side_image3
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        
+        cursor.execute(insert_query, (
+            mock_data["tour_name"],
+            mock_data["location"],
+            mock_data["tour_type"],
+            mock_data["price"],
+            mock_data["min_bookings"],
+            mock_data["check_in_date"],
+            mock_data["check_out_date"],
+            mock_data["hotel_name"],
+            mock_data["room_type"],
+            mock_data["overview"],
+            mock_data["inclusions"],
+            mock_data["exclusions"],
+            mock_data["flight_information"],
+            mock_data["itinerary"],
+            mock_data["important_notes"],
+            mock_data["meeting_point"],
+            mock_data["end_point"],
+            mock_data["pickup_details"],
+            mock_data["main_image"],
+            mock_data["side_image1"],
+            mock_data["side_image2"],
+            mock_data["side_image3"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock tour record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
 ## ------ delete records ---------------- ##
 @app.route('/delete-notifications-table', methods=['POST'])
 def delete_notifications_table():
@@ -699,7 +829,7 @@ def show_table_content(table_name):
         # Validate table name to prevent SQL injection (only allow known safe table names)
         allowed_tables = [
             'auth', 'flight_bookings', 'tour_bookings', 'kabayan_bookings', 'itinerary_bookings', 'payments',
-            'admin_employees','notifications'
+            'admin_employees','notifications','tours'
         ]
 
         if table_name not in allowed_tables:
