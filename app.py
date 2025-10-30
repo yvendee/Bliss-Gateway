@@ -1463,9 +1463,9 @@ def activate_account():
     finally:
         cursor.close()
 
-@app.route("/api/get-tours")
-def get_tours():
-    return jsonify({"success": True}), 200
+# @app.route("/api/get-tours")
+# def get_tours():
+#     return jsonify({"success": True}), 200
 
 
 @app.route('/api/add-tour', methods=['POST'])
