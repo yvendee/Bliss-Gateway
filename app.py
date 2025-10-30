@@ -17,6 +17,7 @@ import hashlib
 from functools import wraps
 from io import BytesIO
 from werkzeug.utils import secure_filename
+from io import BytesIO
 
 
 
@@ -1465,6 +1466,76 @@ def activate_account():
 @app.route("/api/get-tours")
 def get_tours():
     return jsonify({"success": True}), 200
+
+
+@app.route('/upload-image', methods=['POST'])
+def upload_image_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['file']
+    
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    
+    # Define the target server's URL for uploading the image
+    target_url = "http://104.248.11.135:5000/upload-image-file"
+    
+    try:
+        # Prepare the file for upload
+        files = {'file': (file.filename, file.stream, file.content_type)}
+        
+        # Send the image to the other server
+        response = requests.post(target_url, files=files)
+        
+        # Check if the upload was successful
+        if response.status_code == 200:
+            response_data = response.json()  # Assuming the target server responds with JSON
+            
+            # Extract the new filename from the response
+            new_filename = response_data.get('new_filename', None)
+            
+            if new_filename:
+                return jsonify({
+                    "message": "Image uploaded successfully to the other server",
+                    "new_filename": new_filename,
+                    "status": "success"
+                }), 200
+            else:
+                return jsonify({
+                    "error": "Target server did not return new filename",
+                    "status": "error"
+                }), 500
+        else:
+            return jsonify({"error": f"Failed to upload image to the target server: {response.text}"}), response.status_code
+        
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error during the upload: {str(e)}"}), 500
+
+@app.route('/get-image/<filename>', methods=['GET'])
+def get_image(filename):
+    # Define the URL of the target server from which we are fetching the image
+    target_url = f"http://104.248.11.135:5000/view-file/{filename}"
+    
+    try:
+        # Send a GET request to the target server to retrieve the image
+        response = requests.get(target_url)
+        
+        # If the response is successful (status code 200)
+        if response.status_code == 200:
+            # Send the image back to the client
+            # The 'BytesIO' class is used to send the binary content as an in-memory file-like object
+            image_data = BytesIO(response.content)
+            
+            # We can also set the mimetype for the image if we know the type (e.g., image/jpeg)
+            return send_file(image_data, mimetype='image/jpeg', as_attachment=True, attachment_filename=filename)
+        
+        else:
+            return jsonify({"error": "Failed to retrieve image from the target server", "status": "error"}), response.status_code
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error while retrieving the image: {str(e)}", "status": "error"}), 500
+
 
 
 @app.route('/logout', methods=['GET'])
