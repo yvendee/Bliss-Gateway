@@ -158,7 +158,7 @@ function appendTourCard(tour) {
   if (emptyPackage) emptyPackage.style.display = "none";
   toursContainer.style.display = "grid";
 
-  let image = "../assets/icons/no-image.png";
+  let image = '{{ url_for("static", filename="icons//no-image.png") }}';
   if (Array.isArray(tour.images) && tour.images.length > 0) image = tour.images[0];
   else if (tour.main_image) image = tour.main_image;
 
