@@ -1528,7 +1528,7 @@ def get_image(filename):
             image_data = BytesIO(response.content)
             
             # We can also set the mimetype for the image if we know the type (e.g., image/jpeg)
-            return send_file(image_data, mimetype='image/jpeg', as_attachment=True, attachment_filename=filename)
+            return send_file(image_data, mimetype='image/jpeg', as_attachment=True, download_name=filename)
         
         else:
             return jsonify({"error": "Failed to retrieve image from the target server", "status": "error"}), response.status_code
