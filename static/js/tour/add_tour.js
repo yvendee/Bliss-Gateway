@@ -238,7 +238,7 @@ async function saveForm() {
   });
 
   try {
-    const resp = await fetch("add_tour.php", { method: "POST", body: fd });
+    const resp = await fetch("/api/add-tour", { method: "POST", body: fd });
     const data = await resp.json();
 
     if (data.success) {
@@ -285,7 +285,7 @@ async function get_tours() {
   if (!toursContainer) return;
 
   try {
-    const res = await fetch("get_tours.php");
+    const res = await fetch("/api/get-tours");
     const json = await res.json();
     const tours = json.tours || json.data || json || [];
 

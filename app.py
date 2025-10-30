@@ -1468,6 +1468,179 @@ def get_tours():
     return jsonify({"success": True}), 200
 
 
+@app.route('/api/add-tour', methods=['POST'])
+def add_tour():
+    # Step 1: Check if MySQL is available
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    # Step 2: Get the cursor to interact with MySQL
+    cursor, connection = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Step 3: Get data from the request
+        data = request.form.to_dict()
+
+        # Required fields validation
+        required_fields = ["tour_name", "location", "tour_type", "price", "min_bookings", "overview"]
+        for field in required_fields:
+            if field not in data or not data[field].strip():
+                return jsonify({"error": f"{field.replace('_', ' ').capitalize()} is required."}), 400
+
+        # Step 4: Handle the images (upload images via the /upload-image endpoint)
+        images = {
+            "main_image": None,
+            "side_image1": None,
+            "side_image2": None,
+            "side_image3": None
+        }
+
+        for key in images.keys():
+            if key in request.files:
+                file = request.files[key]
+                if file and file.filename != '':
+                    # Send the file to the other server with the new filename
+                    target_url = "http://104.248.11.135:5000/upload-image-file"
+                    files = {'file': (file.filename, file.stream, file.content_type)}
+                    response = requests.post(target_url, files=files)
+
+                    if response.status_code == 200:
+                        response_data = response.json()
+                        # Extract the new filename from the response
+                        new_filename = response_data.get('new_filename', None)
+
+                        if new_filename:
+                            # Assuming the response includes the "new_filename" field
+                            images[key] = new_filename
+                        else:
+                            return jsonify({"error": f"Failed to get new filename for {key}."}), 500
+                    else:
+                        return jsonify({"error": f"Failed to upload {key}."}), 500
+
+        # Step 5: Use default image if no image is uploaded
+        if not images["main_image"]:
+            images["main_image"] = "assets/images/default-tour.jpg"
+
+        # Step 6: Prepare the full URL for each image (assuming the server will serve the images under `https://bliss-gateway.vercel.app/get-image/`)
+        image_base_url = "https://bliss-gateway.vercel.app/get-image/"
+        images["main_image"] = image_base_url + images["main_image"]
+        images["side_image1"] = image_base_url + images["side_image1"] if images["side_image1"] else None
+        images["side_image2"] = image_base_url + images["side_image2"] if images["side_image2"] else None
+        images["side_image3"] = image_base_url + images["side_image3"] if images["side_image3"] else None
+
+        # Step 7: Prepare the SQL insert query
+        insert_query = """
+        INSERT INTO tours (
+            tour_name, location, tour_type, price, min_bookings, overview,
+            inclusions, exclusions, flight_information, itinerary, important_notes,
+            meeting_point, end_point, pickup_details, main_image, side_image1, side_image2, side_image3
+        ) VALUES (
+            %(tour_name)s, %(location)s, %(tour_type)s, %(price)s, %(min_bookings)s, %(overview)s,
+            %(inclusions)s, %(exclusions)s, %(flight_information)s, %(itinerary)s, %(important_notes)s,
+            %(meeting_point)s, %(end_point)s, %(pickup_details)s, %(main_image)s, %(side_image1)s, %(side_image2)s, %(side_image3)s
+        );
+        """
+
+        # Step 8: Prepare data for insertion
+        tour_data = {
+            "tour_name": data["tour_name"],
+            "location": data["location"],
+            "tour_type": data["tour_type"],
+            "price": data["price"],  # Price as TEXT as per schema
+            "min_bookings": int(data["min_bookings"]),
+            "overview": data["overview"],
+            "inclusions": data.get("inclusions", ""),
+            "exclusions": data.get("exclusions", ""),
+            "flight_information": data.get("flight_information", ""),
+            "itinerary": data.get("itinerary", ""),
+            "important_notes": data.get("important_notes", ""),
+            "meeting_point": data.get("meeting_point", ""),
+            "end_point": data.get("end_point", ""),
+            "pickup_details": data.get("pickup_details", ""),
+            "main_image": images["main_image"],
+            "side_image1": images["side_image1"],
+            "side_image2": images["side_image2"],
+            "side_image3": images["side_image3"]
+        }
+
+        # Step 9: Execute the insert query
+        cursor.execute(insert_query, tour_data)
+        connection.commit()
+
+        # Step 10: Return a success message with the inserted tour data
+        return jsonify({
+            "message": "Tour added successfully!",
+            "tour": tour_data
+        }), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route('/api/get-tours', methods=['GET'])
+def get_tours():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor, connection = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Fetching the tours
+        query = "SELECT * FROM tours ORDER BY createdAt DESC"
+        cursor.execute(query)
+        tours = cursor.fetchall()
+
+        tours_data = []
+        for row in tours:
+            # Prepare images list
+            images = []
+            if row.get('main_image'):
+                images.append(row['main_image'])
+            if row.get('side_image1'):
+                images.append(row['side_image1'])
+            if row.get('side_image2'):
+                images.append(row['side_image2'])
+            if row.get('side_image3'):
+                images.append(row['side_image3'])
+
+            row['images'] = images
+
+            # Ensure price remains a string (TEXT in MySQL)
+            if row.get('price'):
+                row['price'] = str(row['price'])  # Keep it as string, no conversion
+
+            # Convert min_bookings to int (if it exists)
+            if row.get('min_bookings'):
+                row['min_bookings'] = int(row['min_bookings'])
+
+            tours_data.append(row)
+
+        return jsonify({
+            "status": "success",
+            "message": "Tours fetched successfully.",
+            "data": tours_data
+        }), 200
+
+    except mysql.connector.Error as e:
+        connection.rollback()
+        return handle_mysql_error(f"Error: {str(e)}")
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
 @app.route('/upload-image', methods=['POST'])
 def upload_image_file():
     if 'file' not in request.files:
