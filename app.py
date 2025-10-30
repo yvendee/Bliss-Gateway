@@ -744,39 +744,21 @@ def insert_mock_tour():
             "side_image3": "https://example.com/side_image3.jpg"
         }
 
+        # The number of placeholders in the SQL query should match the number of values in mock_data
         insert_query = """
         INSERT INTO tours (
             tour_name, location, tour_type, price, min_bookings, check_in_date, check_out_date, hotel_name, 
             room_type, overview, inclusions, exclusions, flight_information, itinerary, important_notes, 
             meeting_point, end_point, pickup_details, main_image, side_image1, side_image2, side_image3
-        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        ) VALUES (
+            %(tour_name)s, %(location)s, %(tour_type)s, %(price)s, %(min_bookings)s, %(check_in_date)s, 
+            %(check_out_date)s, %(hotel_name)s, %(room_type)s, %(overview)s, %(inclusions)s, %(exclusions)s, 
+            %(flight_information)s, %(itinerary)s, %(important_notes)s, %(meeting_point)s, %(end_point)s, 
+            %(pickup_details)s, %(main_image)s, %(side_image1)s, %(side_image2)s, %(side_image3)s
+        );
         """
-        
-        cursor.execute(insert_query, (
-            mock_data["tour_name"],
-            mock_data["location"],
-            mock_data["tour_type"],
-            mock_data["price"],
-            mock_data["min_bookings"],
-            mock_data["check_in_date"],
-            mock_data["check_out_date"],
-            mock_data["hotel_name"],
-            mock_data["room_type"],
-            mock_data["overview"],
-            mock_data["inclusions"],
-            mock_data["exclusions"],
-            mock_data["flight_information"],
-            mock_data["itinerary"],
-            mock_data["important_notes"],
-            mock_data["meeting_point"],
-            mock_data["end_point"],
-            mock_data["pickup_details"],
-            mock_data["main_image"],
-            mock_data["side_image1"],
-            mock_data["side_image2"],
-            mock_data["side_image3"]
-        ))
 
+        cursor.execute(insert_query, mock_data)  # Directly passing the mock_data dictionary as parameters
         db_connection.commit()
         return jsonify({"message": "Mock tour record inserted successfully."}), 201
 
