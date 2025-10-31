@@ -42,7 +42,7 @@ CORS(app)  # This allows all origins (wildcard)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")  # Set a strong secret key
 
 # Folder where images are stored
-IMAGE_FOLDER = os.path.join(app.root_path, 'static', 'image')
+IMAGE_FOLDER = os.path.join(app.root_path, 'static', 'images')
 
 
 # #Load environment variables from .env file
