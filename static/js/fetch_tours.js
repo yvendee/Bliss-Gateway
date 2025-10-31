@@ -20,17 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Failed to fetch tours:", error);
         // container.innerHTML = "<p>Unable to load tours at the moment.</p>";
-        container.innerHTML = `
-        <div style="
-            text-align: center;
-            width: 100%;
-            padding: 40px 0;
-            font-size: 1.1rem;
-            color: #666;
-        ">
-            Unable to load tours at the moment.
-        </div>
-        `;
+        container.innerHTML = `<div class="empty-message">Unable to load tours at the moment.</div>`;
+
     }
 
     /**
@@ -41,17 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (tours.length === 0) {
             // container.innerHTML = "<p>No tours match your search criteria.</p>";
-            container.innerHTML = `
-            <div style="
-                text-align: center;
-                width: 100%;
-                padding: 40px 0;
-                font-size: 1.1rem;
-                color: #666;
-            ">
-                No tours match your search criteria.
-            </div>
-            `;
+            container.innerHTML = `<div class="empty-message">No tours match your search criteria.</div>`;
             return;
         }
 
