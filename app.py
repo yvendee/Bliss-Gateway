@@ -1590,7 +1590,7 @@ def add_tour():
 
 # curl -X POST "https://bliss-gateway.vercel.app/api/v1/add-tour" -H "Content-Type: application/json" -d "{\"tour_name\":\"Grand European Tour\",\"location\":\"Europe\",\"tour_type\":\"Guided\",\"price\":\"499.99\",\"min_bookings\":10,\"check_in_date\":\"2025-12-01 14:00:00\",\"check_out_date\":\"2025-12-10 12:00:00\",\"hotel_name\":\"Luxury Hotel\",\"room_type\":\"Deluxe Suite\",\"overview\":\"A journey through the most beautiful cities in Europe.\",\"inclusions\":\"Accommodation, Transport, Guide, Meals\",\"exclusions\":\"Flights, Travel Insurance\",\"flight_information\":\"Direct flights from NYC\",\"itinerary\":\"Day 1: Paris, Day 2: Rome, Day 3: London\",\"important_notes\":\"Visa required for some countries.\",\"meeting_point\":\"Hotel Lobby\",\"end_point\":\"Airport\",\"pickup_details\":\"Pick-up at 9 AM from the hotel\",\"main_image\":\"https://example.com/main_image.jpg\",\"side_image1\":\"https://example.com/side_image1.jpg\",\"side_image2\":\"https://example.com/side_image2.jpg\",\"side_image3\":\"https://example.com/side_image3.jpg\"}"
 @app.route('/api/v1/add-tour', methods=['POST'])
-def add_tour():
+def add_tour_v1():
     if not is_mysql_available():
         return handle_mysql_error("MySQL not available")
 
