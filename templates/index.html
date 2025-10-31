@@ -46,7 +46,7 @@
 
     <hr class="separator">
 
-    <section class="travel-packages">
+    <!-- <section class="travel-packages">
         <h2>Featured Packages</h2>
         <div class="packages">
             <div class="package">
@@ -107,6 +107,12 @@
             </div>
         </div>
         <button class="see-all-button">See all</button>
+    </section> -->
+
+    <section class="travel-packages">
+        <h2>Featured Packages</h2>
+        <div class="packages" id="packages-container"></div>
+        <button class="see-all-button">See all</button>
     </section>
 
     <hr class="section-divider" />
@@ -159,6 +165,8 @@
     </script>
     <script src='{{ url_for("static", filename="js/header_load.js") }}' defer>
     </script>
+    <script src='{{ url_for("static", filename="js/fetch_tours.js") }}' defer></script>
+
 
 </body>
 </html>
