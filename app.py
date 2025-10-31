@@ -41,6 +41,9 @@ CORS(app)  # This allows all origins (wildcard)
 
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")  # Set a strong secret key
 
+# Folder where images are stored
+IMAGE_FOLDER = os.path.join(app.root_path, 'static', 'image')
+
 
 # #Load environment variables from .env file
 # load_dotenv()
@@ -1585,6 +1588,66 @@ def add_tour():
         cursor.close()
         connection.close()
 
+# curl -X POST "https://bliss-gateway.vercel.app/api/v1/add-tour" -H "Content-Type: application/json" -d "{\"tour_name\":\"Grand European Tour\",\"location\":\"Europe\",\"tour_type\":\"Guided\",\"price\":\"499.99\",\"min_bookings\":10,\"check_in_date\":\"2025-12-01 14:00:00\",\"check_out_date\":\"2025-12-10 12:00:00\",\"hotel_name\":\"Luxury Hotel\",\"room_type\":\"Deluxe Suite\",\"overview\":\"A journey through the most beautiful cities in Europe.\",\"inclusions\":\"Accommodation, Transport, Guide, Meals\",\"exclusions\":\"Flights, Travel Insurance\",\"flight_information\":\"Direct flights from NYC\",\"itinerary\":\"Day 1: Paris, Day 2: Rome, Day 3: London\",\"important_notes\":\"Visa required for some countries.\",\"meeting_point\":\"Hotel Lobby\",\"end_point\":\"Airport\",\"pickup_details\":\"Pick-up at 9 AM from the hotel\",\"main_image\":\"https://example.com/main_image.jpg\",\"side_image1\":\"https://example.com/side_image1.jpg\",\"side_image2\":\"https://example.com/side_image2.jpg\",\"side_image3\":\"https://example.com/side_image3.jpg\"}"
+@app.route('/api/v1/add-tour', methods=['POST'])
+def add_tour():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Parse JSON body from the request
+        data = request.get_json()
+
+        # Validate required fields
+        required_fields = [
+            "tour_name", "location", "tour_type", "price",
+            "min_bookings", "overview"
+        ]
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({
+                    "status": "error",
+                    "message": f"{field.replace('_', ' ').title()} is required."
+                }), 400
+
+        # Prepare SQL insert query
+        insert_query = """
+        INSERT INTO tours (
+            tour_name, location, tour_type, price, min_bookings,
+            check_in_date, check_out_date, hotel_name, room_type, overview,
+            inclusions, exclusions, flight_information, itinerary,
+            important_notes, meeting_point, end_point, pickup_details,
+            main_image, side_image1, side_image2, side_image3
+        ) VALUES (
+            %(tour_name)s, %(location)s, %(tour_type)s, %(price)s, %(min_bookings)s,
+            %(check_in_date)s, %(check_out_date)s, %(hotel_name)s, %(room_type)s, %(overview)s,
+            %(inclusions)s, %(exclusions)s, %(flight_information)s, %(itinerary)s,
+            %(important_notes)s, %(meeting_point)s, %(end_point)s, %(pickup_details)s,
+            %(main_image)s, %(side_image1)s, %(side_image2)s, %(side_image3)s
+        );
+        """
+
+        # Insert into DB
+        cursor.execute(insert_query, data)
+        db_connection.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "Tour record added successfully.",
+            "tour": data
+        }), 201
+
+    except mysql.connector.Error as e:
+        db_connection.rollback()
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 @app.route('/api/get-tours', methods=['GET'])
 def get_tours():
@@ -1709,7 +1772,27 @@ def get_image(filename):
     except requests.exceptions.RequestException as e:
         return jsonify({"error": f"Error while retrieving the image: {str(e)}", "status": "error"}), 500
 
+@app.route('/view-local-image/<filename>', methods=['GET'])
+def view_local_image(filename):
+    # Allowed extensions
+    allowed_extensions = ('.jpg', '.jpeg', '.png', '.webp')
+    
+    # Check file extension
+    if not filename.lower().endswith(allowed_extensions):
+        return jsonify({"status": "error", "message": "Invalid file type"}), 400
 
+    # Construct full path
+    file_path = os.path.join(IMAGE_FOLDER, filename)
+
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        return jsonify({"status": "error", "message": "File not found"}), 404
+
+    try:
+        # Serve the image directly from the static/image folder
+        return send_from_directory(IMAGE_FOLDER, filename)
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/logout', methods=['GET'])
 def logout_user():
