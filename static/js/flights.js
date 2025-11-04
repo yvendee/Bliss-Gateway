@@ -259,6 +259,7 @@ function renderFlights(flights) {
     return;
   }
 
+  
 
   flights.forEach(flight => {
     const code = flight.validatingAirlineCodes?.[0] || flight.itineraries?.[0]?.segments?.[0]?.carrierCode || "XX";
@@ -296,7 +297,7 @@ function renderFlights(flights) {
               <span class="time" style="font-weight:700;">${depTime}</span>
               <span class="airport" style="font-size:12px; color:#6b7280;">${dep.iataCode} ${dep.cityName ? '- ' + dep.cityName : ''}</span>
             </div>
-            <img src="{{ plane_image_url }}" class="flight-plane" style="width:24px;height:24px;object-fit:contain;">
+            <img src="https://bliss-gateway.vercel.app/view-local-icons/plane2.png" class="flight-plane" style="width:24px;height:24px;object-fit:contain;">
             <div class="dep-arr-block" style="display:flex; flex-direction:column; align-items:center;">
               <span class="time" style="font-weight:700;">${arrTime}</span>
               <span class="airport" style="font-size:12px; color:#6b7280;">${arr.iataCode} ${arr.cityName ? '- ' + arr.cityName : ''}</span>

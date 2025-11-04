@@ -50,7 +50,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")  # Set a strong
 
 # Folder where images are stored
 IMAGE_FOLDER = os.path.join(app.root_path, 'static', 'images')
-
+ICON_FOLDER = os.path.join(app.root_path, 'static', 'icons')
 
 # #Load environment variables from .env file
 # load_dotenv()
@@ -1858,6 +1858,28 @@ def view_local_image(filename):
     try:
         # Serve the image directly from the static/image folder
         return send_from_directory(IMAGE_FOLDER, filename)
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route('/view-local-icons/<filename>', methods=['GET'])
+def view_icons_image(filename):
+    # Allowed extensions
+    allowed_extensions = ('.jpg', '.jpeg', '.png', '.webp')
+    
+    # Check file extension
+    if not filename.lower().endswith(allowed_extensions):
+        return jsonify({"status": "error", "message": "Invalid file type"}), 400
+
+    # Construct full path
+    file_path = os.path.join(ICON_FOLDER, filename)
+
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        return jsonify({"status": "error", "message": "File not found"}), 404
+
+    try:
+        # Serve the image directly from the static/image folder
+        return send_from_directory(ICON_FOLDER, filename)
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
