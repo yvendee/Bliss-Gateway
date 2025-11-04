@@ -18,7 +18,7 @@ from functools import wraps
 from io import BytesIO
 from werkzeug.utils import secure_filename
 from io import BytesIO
-
+from amadeus import Client, ResponseError
 
 
 
@@ -37,7 +37,14 @@ CORS(app)  # This allows all origins (wildcard)
 
 # Set up Swagger
 # setup_swagger(app)
+# Amadeus API credentials
+CLIENT_ID = 'S3jw0S99VPzi6Jab3HbLPPRhFOCpLD57'
+CLIENT_SECRET = 'vxjn3mAI1Y2RP3kB'
 
+amadeus = Client(
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET
+)
 
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")  # Set a strong secret key
 
@@ -175,6 +182,66 @@ def reconnect_mysql():
         return jsonify({"message": "Reconnected to MySQL successfully!"}), 200
     else:
         return jsonify({"error": "Failed to reconnect to MySQL."}), 500
+
+
+# --- Search Flights ---
+@app.route('/search-flights', methods=['GET'])
+def search_flights():
+    try:
+        # Get query parameters
+        origin = request.args.get('origin')
+        destination = request.args.get('destination')
+        departure_date = request.args.get('departureDate')
+        return_date = request.args.get('returnDate')
+        adults = request.args.get('adults', 1)
+        currency_code = request.args.get('currencyCode', 'USD')
+
+        if not origin or not destination or not departure_date:
+            return jsonify({'success': False, 'message': 'Missing parameters (origin, destination, departureDate)'}), 400
+
+        # Build params for Amadeus
+        params = {
+            'originLocationCode': origin,
+            'destinationLocationCode': destination,
+            'departureDate': departure_date,
+            'adults': int(adults),  # Ensure adults is an integer
+            'currencyCode': currency_code,
+            'max': 50  # Increase results if desired
+        }
+
+        if return_date:
+            params['returnDate'] = return_date
+
+        # Perform the flight search using Amadeus SDK
+        response = amadeus.shopping.flight_offers_search.get(**params)
+
+        # Return the Amadeus response data to the frontend
+        return jsonify({'success': True, 'data': response.data or []})
+
+    except ResponseError as e:
+        print(f"❌ Amadeus search error: {str(e)}")
+        return jsonify({'success': False, 'message': 'Flight search failed.'}), 500
+
+# --- Airport / City Search ---
+@app.route('/search-airports', methods=['GET'])
+def search_airports():
+    try:
+        # Get the keyword and subType from the query params
+        keyword = request.args.get('keyword')
+        sub_type = request.args.get('subType', 'AIRPORT')
+
+        if not keyword:
+            return jsonify({'error': 'Keyword is required'}), 400
+
+        # Search for locations using Amadeus SDK
+        response = amadeus.reference_data.locations.get(keyword=keyword, subType=sub_type)
+
+        # Return the search results
+        return jsonify(response.data or [])
+
+    except ResponseError as e:
+        print(f"❌ Airport search error: {str(e)}")
+        return jsonify({'error': 'Failed to fetch airports'}), 500
 
 
 ## ------ create table ---------------- ##

@@ -45,13 +45,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             container.appendChild(packageDiv);
         });
 
-        // Optional: handle "See More" clicks
-        document.querySelectorAll(".see-more-button").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-                const tourId = e.target.getAttribute("data-id");
-                window.location.href = `/tour/${tourId}`;
-            });
-        });
+        // // Optional: handle "See More" clicks
+        // document.querySelectorAll(".see-more-button").forEach((btn) => {
+        //     btn.addEventListener("click", (e) => {
+        //         const tourId = e.target.getAttribute("data-id");
+        //         window.location.href = `/tour/${tourId}`;
+        //     });
+        // });
     }
 
     // 🔘 Trigger initial render without filters
