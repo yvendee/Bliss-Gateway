@@ -144,7 +144,7 @@ async function fetchAirportsAndShow(keyword, target, originOnly = false) {
     return;
   }
   try {
-    const res = await fetch(`http://localhost:3001/search-airports?keyword=${encodeURIComponent(keyword)}&subType=AIRPORT`);
+    const res = await fetch(`/search-airports?keyword=${encodeURIComponent(keyword)}&subType=AIRPORT`);
     const list = await res.json();
     if (!Array.isArray(list) || list.length === 0) {
       overlay.innerHTML = "";
@@ -200,7 +200,7 @@ async function resolveAirportCode(value) {
   if (codeMatch) return codeMatch[1];
   // Otherwise query backend to search first match
   try {
-    const res = await fetch(`http://localhost:3001/search-airports?keyword=${encodeURIComponent(value)}&subType=AIRPORT`);
+    const res = await fetch(`/search-airports?keyword=${encodeURIComponent(value)}&subType=AIRPORT`);
     const list = await res.json();
     if (Array.isArray(list) && list.length) return list[0].iataCode;
   } catch (err) {
@@ -227,7 +227,7 @@ async function fetchFlights(from, to, departDate, returnDate = "", tripType = "o
     });
     if (tripType === 'roundtrip' && returnDate) params.set('returnDate', returnDate);
 
-    const res = await fetch(`http://localhost:3001/search-flights?${params.toString()}`);
+    const res = await fetch(`/search-flights?${params.toString()}`);
     const payload = await res.json();
     if (!payload.success || !Array.isArray(payload.data) || payload.data.length === 0) {
       if (!append) container.innerHTML = `<p style="text-align:center;padding:20px;">No flights found.</p>`;
