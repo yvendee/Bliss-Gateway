@@ -259,6 +259,8 @@ function renderFlights(flights) {
     return;
   }
 
+  const planeImageUrl = '{{ url_for("static", filename="icons/plane2.png") }}';
+
   flights.forEach(flight => {
     const code = flight.validatingAirlineCodes?.[0] || flight.itineraries?.[0]?.segments?.[0]?.carrierCode || "XX";
     const airlineDisplayName = airlineNames[code] || code;
@@ -284,6 +286,7 @@ function renderFlights(flights) {
     flightCard.style.alignItems = 'center';
     flightCard.style.gap = '16px';
 
+
     flightCard.innerHTML = `
       <div style="display:flex; align-items:center; gap:12px; min-width:260px;">
         <img src="${logo}" alt="${code}" class="airline-logo" style="width:64px;height:64px;object-fit:contain;border-radius:6px;">
@@ -294,7 +297,7 @@ function renderFlights(flights) {
               <span class="time" style="font-weight:700;">${depTime}</span>
               <span class="airport" style="font-size:12px; color:#6b7280;">${dep.iataCode} ${dep.cityName ? '- ' + dep.cityName : ''}</span>
             </div>
-            <img src='{{ url_for("static", filename="icons/plane2.png") }}' class="flight-plane" style="width:24px;height:24px;object-fit:contain;">
+            <img src="${planeImageUrl}" class="flight-plane" style="width:24px;height:24px;object-fit:contain;">
             <div class="dep-arr-block" style="display:flex; flex-direction:column; align-items:center;">
               <span class="time" style="font-weight:700;">${arrTime}</span>
               <span class="airport" style="font-size:12px; color:#6b7280;">${arr.iataCode} ${arr.cityName ? '- ' + arr.cityName : ''}</span>
