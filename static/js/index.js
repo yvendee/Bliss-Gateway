@@ -79,11 +79,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const seeAllButton = document.querySelector('.see-all-button');
-  if (seeAllButton) {
-    seeAllButton.addEventListener('click', () => {
-      window.location.href = '/tour-booking';
-    });
-  }
-
 });

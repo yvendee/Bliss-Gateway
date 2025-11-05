@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.querySelectorAll(".see-more-button").forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 const tourId = e.target.getAttribute("data-id");
-                window.location.href = `/tour/${tourId}`;
+                // window.location.href = `/tour/${tourId}`;
+                window.location.href = `/tour-booking`;
             });
         });
     }
