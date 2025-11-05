@@ -272,7 +272,7 @@ document.getElementById("publishBtn").addEventListener("click", () => {
 });
 
 // Add Activity dropdown (Flights, Hotels, Restaurants, Tours)
-const btnAddActivity = document.getElementById("btnAddActivity");
+btnAddActivity = document.getElementById("btnAddActivity");
 
 if (btnAddActivity) {
   btnAddActivity.addEventListener("change", (e) => {
