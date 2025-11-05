@@ -133,7 +133,7 @@ function createDayBox(dayNumber, container) {
   header.innerHTML = `<h4>Day ${dayNumber}</h4>`;
 
   const trash = document.createElement("img");
-  trash.src = '{{ url_for("static", filename="icons/trash.png") }}';
+  trash.src = "https://bliss-gateway.vercel.app/view-local-icons/trash.png";
   trash.className = "trash-icon";
   trash.title = "Delete day";
   trash.onclick = () => { dayBox.remove(); renumberDays(); };
