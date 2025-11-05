@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const services = [
     { clientHref: "/flights", adminHref: "/flights" },
     { clientHref: "/tour-booking", adminHref: "/tour/create" },
-    { clientHref: "/kabayan", adminHref: "/kabayan/create" },
-    { clientHref: "/itinerary", adminHref: "/itinerary" }
+    { clientHref: "/kabayan-booking", adminHref: "/kabayan/create" },
+    { clientHref: "/itinerary-booking", adminHref: "/itinerary/create" }
   ];
 
   const actionButtons = document.querySelectorAll(".select-button");

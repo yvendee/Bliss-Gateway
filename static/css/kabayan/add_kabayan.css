@@ -1,0 +1,194 @@
+.kabayan-page {
+  padding: 50px 20px;
+  text-align: left;
+}
+
+/* ===== Header Row ===== */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 800px;
+  padding: 30px;
+  margin: 5px 90px;
+}
+
+.title-with-icon {
+  display: flex;
+  gap: 10px;
+}
+
+.title-with-icon img {
+  width: 40px;
+  height: 40px;
+}
+
+/* ===== Empty State ===== */
+.empty-package {
+  background-color: #f1f1f1;
+  width: 1000px;
+  height: 335px;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(82, 82, 82, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+
+.pin2-icon {
+  width: 90px;
+  margin-bottom: 20px;
+}
+
+.create-package-btn {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 10px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.create-package-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Filters & Add Button */
+.filter-section select {
+  padding: 3px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.add-package-btn {
+  padding: 3px 20px;
+  background-color: #fff;
+  color: rgb(0, 0, 0);
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.add-package-btn:hover {
+  background-color: #f4f4f4;
+}
+
+/* Container for kabayan previews */
+#kabayanToursContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 50px;
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Single Kabayan Card */
+.tour-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  width: 250px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Kabayan Image */
+.tour-card .tour-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+/* Kabayan Details */
+.tour-details {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  position: relative;
+}
+
+/* Location + Price row */
+.tour-details h3,
+.tour-details p.tour-price {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.tour-details h3 {
+  float: left;
+  font-weight: 800;
+  font-size: 16px;
+  color: #091d46;
+}
+
+.tour-details p.tour-price {
+  float: right;
+  color: #008EC4;
+  font-size: 13px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+.tour-details::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Inclusions: 2 columns */
+.tour-inclusions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.inclusion-item {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  gap: 5px;
+}
+
+.inclusion-item img {
+  width: 13px;
+  height: 13px;
+}
+
+/* See More Button */
+.see-more-btn {
+  display: block;
+  margin-top: auto;
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 5px 40px;
+  background-color: #008EC4;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+}
+
+.see-more-btn:hover {
+  background-color: #091d46;
+  color: #fff;
+}

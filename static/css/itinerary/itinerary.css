@@ -1,0 +1,896 @@
+:root {
+  --card: #e6f4fb;
+  --ink: rgb(0, 0, 0);
+  --line: #d8e2ea;
+  --white: #fff;
+  --muted: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Poppins;
+  color: var(--ink);
+}
+
+.wrap {
+  max-width: 1600px;
+  margin: 28px auto;
+  padding: 0 20px;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.title-container h1 {
+  font-size: 25px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.title-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.panel {
+  background: var(--card);
+  padding: 18px;
+  margin: 14px 0;
+  border: 1px solid var(--line);
+}
+
+.panel h4 {
+  margin: 0 0 13px 0;
+  font-size: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 50px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field {
+  margin-bottom: 10px;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: normal;
+}
+
+.field input[type="text"],
+.field input[type="date"],
+.field select,
+.modal-details input,
+.modal-details textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  border-radius: 4px;
+  font-size: 15px;
+}
+
+.modal-details textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+  gap: 12px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin: 0;
+}
+
+.checkbox-group label {
+  margin: 0;
+  font-size: 14px;
+}
+
+.flex {
+  display: flex;
+  gap: 18px;
+}
+
+/* Library & Days */
+.lib,
+.days {
+  max-height: 900px;
+  overflow-y: hidden;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.lib.results-loaded,
+.days.results-loaded {
+  overflow-y: auto;
+}
+
+.lib-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 0 15px;
+}
+
+.activity-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.activity-toolbar select {
+  padding: 8px 25px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-size: 14px;
+}
+
+/* Itinerary Days */
+#daysContainer {
+  max-height: 800px;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff;
+}
+
+.day-box {
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.day-header h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.trash-icon {
+  cursor: pointer;
+  color: #000;
+  font-size: 19px;
+}
+
+.drop {
+  padding: 12px;
+  min-height: 120px;
+  background: var(--white);
+  border: 1px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.drop.empty::before {
+  content: "Drag activities here";
+  color: var(--muted);
+  font-size: 14px;
+  text-align: center;
+  margin: auto;
+}
+
+.drop.drag-over {
+  border-color: #0ea5e9;
+  background: #f0f9ff;
+}
+
+/* Activity Cards */
+#activity-results {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 8px;
+  background: #fff;
+}
+
+.activity-card {
+  margin-bottom: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 4px;
+  background: #fafafa;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 100px 1fr 90px;
+  gap: 12px;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.card:last-child {
+  border-bottom: 0;
+}
+
+.card img {
+  width: 100%;
+  height: 70px;
+  object-fit: cover;
+}
+
+.card h5 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.price {
+  font-weight: 700;
+  text-align: right;
+}
+
+#daysContainer::-webkit-scrollbar,
+#activity-results::-webkit-scrollbar {
+  width: 8px;
+}
+
+#daysContainer::-webkit-scrollbar-track,
+#activity-results::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+#daysContainer::-webkit-scrollbar-thumb,
+#activity-results::-webkit-scrollbar-thumb {
+  background-color: #0ea5e9;
+  border-radius: 6px;
+  border: 2px solid #f1f1f1;
+}
+
+#daysContainer::-webkit-scrollbar-thumb:hover,
+#activity-results::-webkit-scrollbar-thumb:hover {
+  background-color: #0284c7;
+}
+
+#daysContainer,
+#activity-results {
+  scrollbar-width: thin;
+  scrollbar-color: #0ea5e9 #f1f1f1;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-box {
+  background: #fff;
+  width: 500px;
+  max-width: 95%;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  position: relative;
+  border-radius: 6px;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px 0 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.category-dropdown {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.main-image {
+  height: 250px;
+  border: 1px solid #ccc;
+  position: relative;
+  background-color: #f8f8f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.remove-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+#mainImageInput {
+  display: none;
+}
+
+.file-label {
+  background: #0ea5e9;
+  color: #fff;
+  padding: 8px 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s ease;
+  font-weight: 600;
+}
+
+.file-label:hover {
+  background: #0284c7;
+}
+
+.modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-details label {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.price-wrapper input {
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.duration {
+  font-size: 14px;
+}
+
+.per-person {
+  font-size: 14px;
+  color: #79797a;
+  text-align: right;
+}
+
+.section.duration-row {
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
+.field label.location-label {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.publish-btn {
+  margin-top: 10px;
+  padding: 10px;
+  background: #0ea5e9;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.publish-btn:hover {
+  background: #0284c7;
+}
+
+.editable {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.price {
+  text-align: right;
+  font-weight: 600;
+}
+
+.itinerary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.itinerary-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 15px;
+}
+
+.btn {
+  border: 0;
+  background: #0ea5e9;
+  color: #fff;
+  padding: 6px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+#btnAddActivity {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: var(--white) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'><path fill='%23000' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+  background-size: 14px;
+  color: #000;
+  padding: 6px 32px 6px 10px; 
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  height: 32px; 
+  line-height: 1.2;
+}
+
+#btnAddActivity option {
+  padding: 6px 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.activity-trash {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 14px;
+  float: right;
+  color: red;
+}
+
+.activity-card .card {
+  position: relative;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.activity-card .card .activity-trash {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+}
+
+.activity-card.dragging {
+  opacity: 0.5;
+}
+
+.activity-card { margin-bottom:10px; }
+.card {
+  display:grid;
+  grid-template-columns: 140px 1fr 120px;
+  gap:12px;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  align-items: start;
+  background:#fff;
+  position:relative;
+}
+.card img { 
+  width:140px; 
+  height:100px; 
+  object-fit:cover; 
+  border-radius:6px; 
+}
+
+.card .content { 
+  display:flex; 
+  flex-direction:column; 
+  gap:6px; 
+}
+
+.card h5 { 
+  margin:0; 
+  font-size:16px; 
+  font-weight:600; 
+}
+
+.card .subtitle { 
+  font-size:13px; 
+  color:#000; 
+  margin-top:2px; }
+
+.card p { 
+  margin:0; 
+  color:var(--muted); 
+  font-size:13px; 
+  line-height:1.4; 
+}
+
+.card .right {
+  display:flex; 
+  flex-direction:column; 
+  align-items:flex-end; 
+  gap:6px; 
+  justify-content:space-between;
+}
+
+.card .price { 
+  font-weight:700; 
+  font-size:18px; 
+}
+
+.card .duration { 
+  font-size:12px; 
+  color:var(--muted); 
+}
+
+.activity-menu {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.activity-menu:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+.activity-card {
+  position: relative; 
+}
+
+.activity-menu svg {
+  fill: #555;
+  width: 18px;
+  height: 18px;
+}
+
+.center-placeholder {
+  text-align: center;
+  color: var(--muted);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Activity Delete Confirmation Popup */
+#activityConfirmPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(2, 141, 200, 0.2);
+    z-index: 1000;
+    display: none;
+    text-align: center;
+}
+
+#activityConfirmPopup p {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+#activityConfirmPopup button {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+#confirmDeleteActivity {
+    background-color: #008EC4;
+    color: white;
+}
+
+#confirmDeleteActivity:hover {
+    background-color: #006fa1;
+}
+
+#cancelDeleteActivity {
+    background-color: #e0e0e0;
+}
+
+#cancelDeleteActivity:hover {
+    background-color: #999999;
+}
+
+.trash-icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+.day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.day-box {
+  flex: 0 0 360px;   
+  min-height: 300px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background: #f9f9ff;   
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Day header with delete */
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.day-header h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #091d46;  /* your theme color */
+}
+
+.trash-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.trash-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Slot sections inside each day */
+.time-slot {
+  border: 1px dashed #aaa;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.slot-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.slot-select {
+  flex: 1;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+.slot-time {
+  flex: 1;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+/* Drop zone */
+.drop {
+  flex: 1;
+  min-height: 80px;
+  border: 2px dashed #ddd;
+  border-radius: 6px;
+  padding: 6px;
+  background: #fefefe;
+  transition: background 0.2s;
+}
+
+.drop.dragover {
+  background: #e6f0ff;
+  border-color: #007bff;
+}
+
+.drop.empty::before {
+  content: "Drag activities here";
+  color: #999;
+  font-size: 13px;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Activity Card */
+.activity-card {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: grab;
+}
+
+.activity-card .master-title {
+  font-weight: bold;
+  color: #091d46;
+}
+
+.activity-card .subtitle {
+  font-size: 13px;
+  color: #555;
+}
+
+.activity-card .price {
+  font-size: 13px;
+  color: #007bff;
+}
+
+.activity-card .duration {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Remove button inside activity */
+.activity-remove {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 14px;
+  color: #c00;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.activity-remove:hover {
+  color: #f33;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: var(--white) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'><path fill='%23000' d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+  background-size: 14px;
+  padding-right: 32px; 
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}

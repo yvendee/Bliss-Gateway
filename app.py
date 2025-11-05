@@ -1001,28 +1001,38 @@ def tour_add_page():
     return render_template("tour/add_tour.html")
 
 
-@app.route("/kabayan")
-def kabayan_page():
+@app.route("/kabayan-booking")
+def kabayan_booking_page():
     # Render the HTML template for the /ui route
-    return render_template("kabayan/kabayan.html")
-
-@app.route("/add-kabayan")
-def add_kabayan_page():
-    # Render the HTML template for the /ui route
-    return render_template("kabayan/add_kabayan.html")
+    return render_template("kabayan_booking.html")
 
 @app.route("/kabayan/create")
 def kabayan_create_page():
     # Render the HTML template for the /ui route
-    return render_template("kabayan/create.html")
+    return render_template("kabayan/add_kabayan.html")
 
-@app.route("/itinerary")
+# @app.route("/add-kabayan")
+# def add_kabayan_page():
+#     # Render the HTML template for the /ui route
+#     return render_template("kabayan/add_kabayan.html")
+
+
+@app.route("/itinerary-booking")
+def itinerary_booking_page():
+    # Render the HTML template for the /ui route
+    return render_template("itinerary_booking.html")
+
+@app.route("/itinerary/create")
 def itinerary_create_page():
     # Render the HTML template for the /ui route
-    return render_template("itinerary.html")
+    return render_template("itinerary/add_itinerary.html")
+
+# @app.route("/itinerary")
+# def itinerary_page():
+#     # Render the HTML template for the /ui route
+#     return render_template("itinerary.html")
 
  
-
 @app.route("/admin-sidebar")
 def admin_sidebar_page():
     # Render the HTML template for the /ui route
