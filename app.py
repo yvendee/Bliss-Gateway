@@ -1009,6 +1009,11 @@ def kabayan_booking_page():
 @app.route("/kabayan/create")
 def kabayan_create_page():
     # Render the HTML template for the /ui route
+    return render_template("kabayan/create_kabayan.html")
+
+@app.route("/kabayan/add")
+def kabayan_add_page():
+    # Render the HTML template for the /ui route
     return render_template("kabayan/add_kabayan.html")
 
 # @app.route("/add-kabayan")

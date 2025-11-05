@@ -1,341 +1,322 @@
-// ======================= kabayan.js =======================
-// Behaves like create.js but specific to Kabayan packages
+// ======================= Utility: Find form =======================
+function getFormElement() {
+  return (
+    document.getElementById("tourForm") ||
+    document.getElementById("addTourForm") ||
+    document.getElementById("editTourForm") ||
+    document.querySelector("form")
+  );
+}
 
-// ======================= EDITABLE FIELDS =======================
-function makeKabayanEditable(element) {
-  if (element.id === "kabayanMinBookingsField") {
-    const text = element.innerText.trim();
-    const match = text.match(/(\d+)/);
-    const currentValue = match ? match[1] : "";
+// ======================= Inline Editable Fields =======================
+function makeEditable(element) {
+  if (!element) return;
 
-    element.innerHTML = `Minimum number of bookings: 
-      <input type="number" id="kabayanMinBookingsInput" value="${currentValue}" min="1" style="width:80px;">`;
-    document.getElementById("kabayanMinBookingsInput").focus();
-    return;
-  }
+  const currentText = element.innerText.replace("✎", "").replace("₱", "").trim();
+  const isNumber =
+    element.classList.contains("price") || element.classList.contains("editable2");
+
+  const input = document.createElement("input");
+  input.type = isNumber ? "number" : "text";
+  input.value = currentText.replace(/,/g, "");
+  input.required = true;
+  input.className = "editable-input";
 
   if (element.classList.contains("price")) {
-    const text = element.innerText.replace(/[^\d.]/g, "");
-    element.innerHTML = `<input type="number" id="kabayanPriceInput" value="${text}" step="0.01" style="width:120px;">`;
-    document.getElementById("kabayanPriceInput").focus();
-
-    document.getElementById("kabayanPriceInput").addEventListener("blur", () => {
-      const value = parseFloat(document.getElementById("kabayanPriceInput").value) || 0;
-      element.innerText = "₱" + value.toLocaleString("en-PH", { minimumFractionDigits: 2 }) + " ✎";
-    });
-    return;
+    input.step = "0.01";
+    input.min = "0";
   }
+  if (element.classList.contains("editable2")) input.min = "1";
 
-  const currentValue = element.innerText.replace("✎", "").trim();
-  const input = document.createElement("input");
-  input.type = "text";
-  input.value = currentValue;
-  input.className = "edit-input";
+  const parent = element.parentNode;
+  if (!parent) return;
+  parent.replaceChild(input, element);
 
-  element.innerHTML = "";
-  element.appendChild(input);
   input.focus();
+  input.select();
 
-  input.addEventListener("blur", () => {
-    element.innerText = input.value + " ✎";
-  });
-  input.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") input.blur();
-  });
-}
-
-// ======================= IMAGE PREVIEW =======================
-function previewKabayanImage(event, imageId, inputId) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function () {
-    const img = document.getElementById(imageId);
-    const input = document.getElementById(inputId);
-    img.src = reader.result;
-    img.style.display = "block";
-    if (input && input.closest(".file-input-wrapper")) {
-      input.closest(".file-input-wrapper").style.display = "none";
+  input.addEventListener("blur", () => finalize());
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      finalize();
+    } else if (e.key === "Escape") {
+      parent.replaceChild(element, input);
     }
-    const removeBtn = img.nextElementSibling;
-    if (removeBtn) removeBtn.style.display = "block";
-  };
-  reader.readAsDataURL(file);
-}
+  });
 
-function removeKabayanImage(imageId, inputId) {
-  const img = document.getElementById(imageId);
-  const input = document.getElementById(inputId);
-  if (img) { img.src = ""; img.style.display = "none"; }
-  if (input) {
-    input.value = "";
-    if (input.closest(".file-input-wrapper")) {
-      input.closest(".file-input-wrapper").style.display = "block";
+  function finalize() {
+    const newEl = element.cloneNode(false);
+    let val = input.value.trim();
+
+    if (!val) {
+      input.reportValidity();
+      input.focus();
+      return;
     }
+
+    if (element.classList.contains("price")) {
+      const num = parseFloat(val || 0);
+      newEl.innerText =
+        "₱" +
+        num.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }) +
+        " ✎";
+      newEl.classList.add("editable", "price");
+    } else if (element.classList.contains("editable2")) {
+      newEl.innerText = "Minimum number of bookings: " + (val || 1) + " ✎";
+      newEl.classList.add("editable2");
+    } else {
+      newEl.innerText = val + " ✎";
+      newEl.classList.add("editable");
+    }
+    newEl.onclick = () => makeEditable(newEl);
+    parent.replaceChild(newEl, input);
   }
-  const removeBtn = img?.nextElementSibling;
-  if (removeBtn) removeBtn.style.display = "none";
 }
 
-// ======================= ON LOAD =======================
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const kabayanId = params.get("id");
-
-  if (kabayanId) {
-    fetch(`get_kabayan.php?id=${kabayanId}`)
-      .then(res => res.json())
-      .then(json => {
-        if (!json.success || !json.data) return;
-        const pkg = json.data;
-
-        const setTextWithEdit = (elId, text) => {
-          const el = document.getElementById(elId);
-          if (el) el.innerText = (text || "") + " ✎";
-        };
-
-        setTextWithEdit("kabayanLocationField", pkg.location);
-        setTextWithEdit("kabayanTourNameField", pkg.tour_name);
-
-        const priceEl = document.getElementById("kabayanPriceField");
-        if (priceEl) {
-          const priceVal = pkg.price ? parseFloat(pkg.price) : 0;
-          priceEl.innerText = "₱" + priceVal.toLocaleString("en-PH", { minimumFractionDigits: 2 }) + " ✎";
-        }
-
-        const minBookingsEl = document.getElementById("kabayanMinBookingsField");
-        if (minBookingsEl) minBookingsEl.innerText = `Minimum number of bookings: ${pkg.min_bookings}`;
-
-        ["TourType", "Overview", "MeetingPoint", "EndPoint", "PickupDetails", "CancellationPolicy", "RefundPolicy", "Itinerary"]
-          .forEach(key => {
-            const el = document.getElementById("kabayan" + key);
-            if (el) el.value = pkg[key.toLowerCase()] || "";
-          });
-
-        const safeToArray = (val) => {
-          if (!val) return [];
-          try { return JSON.parse(val); } catch { return []; }
-        };
-        safeToArray(pkg.inclusions).forEach(inc => {
-          document.querySelectorAll(".kabayan-inclusions-checkbox").forEach(cb => {
-            if (cb.value.trim() === inc) cb.checked = true;
-          });
-        });
-        safeToArray(pkg.exclusions).forEach(exc => {
-          document.querySelectorAll(".kabayan-exclusions-checkbox").forEach(cb => {
-            if (cb.value.trim() === exc) cb.checked = true;
-          });
-        });
-
-        if (pkg.main_image) {
-          const img = document.getElementById("kabayanMainImage");
-          const input = document.getElementById("kabayanMainImageInput");
-          if (img) { img.src = pkg.main_image; img.style.display = "block"; }
-          if (input && input.closest(".file-input-wrapper")) input.closest(".file-input-wrapper").style.display = "none";
-        }
-        ["side_image1", "side_image2", "side_image3"].forEach((key, idx) => {
-          const imgId = `kabayanSideImage${idx + 1}`;
-          const inputId = `kabayanSideImageInput${idx + 1}`;
-          if (pkg[key]) {
-            const img = document.getElementById(imgId);
-            const input = document.getElementById(inputId);
-            if (img) { img.src = pkg[key]; img.style.display = "block"; }
-            if (input && input.closest(".file-input-wrapper")) input.closest(".file-input-wrapper").style.display = "none";
-          }
-        });
-
-        const hiddenId = document.createElement("input");
-        hiddenId.type = "hidden";
-        hiddenId.id = "kabayanId";
-        hiddenId.value = pkg.id;
-        document.body.appendChild(hiddenId);
-      })
-      .catch(err => console.error("Error loading kabayan:", err));
-  }
-
-  [
-    document.getElementById("kabayanTourNameField"),
-    document.getElementById("kabayanLocationField"),
-    document.querySelector(".price"),
-    document.getElementById("kabayanMinBookingsField")
-  ].forEach(el => {
-    if (el) {
-      el.style.cursor = "pointer";
-      el.addEventListener("click", () => makeKabayanEditable(el));
-    }
-  });
-
-  if (document.getElementById("kabayanToursContainer")) {
-    get_kabayans();
+document.addEventListener("click", (e) => {
+  const el = e.target;
+  if (!el || !el.classList) return;
+  if (
+    el.classList.contains("editable") ||
+    el.classList.contains("price") ||
+    el.classList.contains("editable2")
+  ) {
+    makeEditable(el);
   }
 });
 
-// ======================= SAVE FORM =======================
-function saveKabayanForm() {
-  const kabayanId = document.getElementById("kabayanId")?.value || "";
-  const tourName = document.getElementById("kabayanTourNameField")?.innerText.replace("✎", "").trim() || "";
-  const location = document.getElementById("kabayanLocationField")?.innerText.replace("✎", "").trim() || "";
-  const tourType = document.getElementById("kabayanTourType")?.value || "";
-  const price = document.querySelector(".price")?.innerText.replace(/[^\d.]/g, "") || "";
-  const minBookings = document.getElementById("kabayanMinBookingsField")?.innerText.match(/(\d+)/)?.[1] || "";
-  const overview = document.getElementById("kabayanOverview")?.value.trim() || "";
-  const meetingPoint = document.getElementById("kabayanMeetingPoint")?.value.trim() || "";
-  const endPoint = document.getElementById("kabayanEndPoint")?.value.trim() || "";
-  const pickupDetails = document.getElementById("kabayanPickupDetails")?.value.trim() || "";
-  const cancellationPolicy = document.getElementById("kabayanCancellationPolicy")?.value.trim() || "";
-  const refundPolicy = document.getElementById("kabayanRefundPolicy")?.value.trim() || "";
-  const itinerary = document.getElementById("kabayanItinerary")?.value.trim() || "";
+// ======================= Image Preview & Remove =======================
+function previewImage(event, imageId, inputId) {
+  const file = event.target.files?.[0];
+  const img = document.getElementById(imageId);
+  const input = document.getElementById(inputId);
+  const wrapper = input?.closest?.(".file-input-wrapper");
+  const removeBtn = img?.nextElementSibling;
 
-  const inclusions = Array.from(document.querySelectorAll(".kabayan-inclusions-checkbox:checked")).map(i => i.value);
-  const exclusions = Array.from(document.querySelectorAll(".kabayan-exclusions-checkbox:checked")).map(i => i.value);
-
-  const imageInputs = [
-    document.getElementById("kabayanMainImageInput"),
-    document.getElementById("kabayanSideImageInput1"),
-    document.getElementById("kabayanSideImageInput2"),
-    document.getElementById("kabayanSideImageInput3")
-  ];
-
-  if (!tourName || !location || !tourType || !price || !overview) {
-    return alert("Please fill all required fields.");
-  }
-  if (inclusions.length === 0) return alert("Select at least one inclusion.");
-  if (exclusions.length === 0) return alert("Select at least one exclusion.");
-
-  const formData = new FormData();
-  formData.append("tour_name", tourName);
-  formData.append("location", location);
-  formData.append("tour_type", tourType);
-  formData.append("price", price);
-  formData.append("min_bookings", minBookings);
-  formData.append("overview", overview);
-  formData.append("meeting_point", meetingPoint);
-  formData.append("end_point", endPoint);
-  formData.append("pickup_details", pickupDetails);
-  formData.append("cancellation_policy", cancellationPolicy);
-  formData.append("refund_policy", refundPolicy);
-  formData.append("itinerary", itinerary);
-  formData.append("inclusions", JSON.stringify(inclusions));
-  formData.append("exclusions", JSON.stringify(exclusions));
-
-  // ✅ FIX: align field names with PHP (main_image, side_image1, side_image2, side_image3)
-  imageInputs.forEach((input, idx) => {
-    if (input && input.files && input.files.length > 0) {
-      if (idx === 0) formData.append("main_image", input.files[0]);
-      if (idx === 1) formData.append("side_image1", input.files[0]);
-      if (idx === 2) formData.append("side_image2", input.files[0]);
-      if (idx === 3) formData.append("side_image3", input.files[0]);
+  if (file && img) {
+    if (!file.type.startsWith("image/")) {
+      input.value = "";
+      input.setCustomValidity("Please select an image file (JPG, PNG, WEBP).");
+      input.reportValidity();
+      return;
     }
-  });
-
-  let url = "add_kabayan.php";
-  if (kabayanId) {
-    url = "update_kabayan.php";
-    formData.append("id", kabayanId);
+    input.setCustomValidity("");
+    img.src = URL.createObjectURL(file);
+    img.style.display = "block";
+    if (wrapper) wrapper.style.display = "none";
+    if (removeBtn) removeBtn.style.display = "inline-block";
+  } else {
+    input.setCustomValidity("Please select a file.");
+    input.reportValidity();
   }
-
-  fetch(url, { method: "POST", body: formData })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("✅ Kabayan package saved successfully!");
-        window.location.href = "kabayan.html";
-      } else {
-        alert("❌ Error: " + (data.message || "Unknown error"));
-      }
-    })
-    .catch(err => {
-      console.error("Save error:", err);
-      alert("Save failed. Check console.");
-    });
 }
 
-// ======================= LIST + RENDER =======================
-function get_kabayans() {
-  fetch("get_kabayans.php")
-    .then(res => res.json())
-    .then(json => {
-      if (!json.success || !json.data) {
-        renderKabayans([]);
-      } else {
-        renderKabayans(json.data);
-      }
-    })
-    .catch(err => {
-      console.error("Error fetching kabayans:", err);
-      renderKabayans([]);
-    });
+function removeImage(imageId, inputId) {
+  const img = document.getElementById(imageId);
+  const input = document.getElementById(inputId);
+  const wrapper = input?.closest?.(".file-input-wrapper");
+  const removeBtn = img?.nextElementSibling;
+
+  if (img) {
+    img.src = "";
+    img.style.display = "none";
+  }
+  if (input) {
+    input.value = "";
+    input.setCustomValidity("Please select a file.");
+  }
+  if (wrapper) wrapper.style.display = "flex";
+  if (removeBtn) removeBtn.style.display = "none";
 }
 
-function renderKabayans(kabayans) {
-  const container = document.getElementById("kabayanToursContainer");
-  const empty = document.getElementById("emptyKabayanPackage");
-  if (!container) return;
+// ======================= Form Validation =======================
+function getMultiLineFieldValue(el) {
+  if (!el) return "";
+  return el.value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+    .join("\n");
+}
 
-  container.innerHTML = "";
+function validateFormTargets() {
+  const form = getFormElement();
+  if (!form) return false;
+  return form.checkValidity();
+}
 
-  if (!kabayans || kabayans.length === 0) {
-    if (empty) empty.style.display = "block";
-    container.style.display = "none";
+// ======================= Append Tour Card =======================
+function appendTourCard(tour) {
+  const toursContainer = document.getElementById("tours-container");
+  const emptyPackage = document.getElementById("emptyPackage");
+  if (!toursContainer) return;
+
+  if (emptyPackage) emptyPackage.style.display = "none";
+  toursContainer.style.display = "grid";
+
+  let image = '{{ url_for("static", filename="icons//no-image.png") }}';
+  if (Array.isArray(tour.images) && tour.images.length > 0) image = tour.images[0];
+  else if (tour.main_image) image = tour.main_image;
+
+  const card = document.createElement("div");
+  card.className = "tour-card";
+  card.innerHTML = `
+    <img src="${image}" alt="${tour.tour_name || ""}" class="tour-image">
+    <div class="tour-details">
+      <h3>${tour.location || tour.tour_name || ""}</h3>
+      <p class="tour-price">₱${parseFloat(tour.price || 0).toLocaleString()}</p>
+    </div>
+    <button class="see-more-btn" onclick="viewTour(${tour.id})">See More</button>
+  `;
+  toursContainer.insertBefore(card, toursContainer.firstChild);
+}
+
+// ======================= Save Form =======================
+async function saveForm() {
+  const form = getFormElement();
+  if (!form) return;
+  if (!validateFormTargets()) {
+    form.reportValidity();
     return;
   }
 
-  if (empty) empty.style.display = "none";
-  container.style.display = "grid";
+  const fd = new FormData(form);
 
-  kabayans.forEach(pkg => {
-    const image = pkg.main_image || '{{ url_for("static", filename="icons/no-image.png") }}';
-    let incs = [];
-    let excs = [];
-    try { incs = JSON.parse(pkg.inclusions || "[]"); } catch {}
-    try { excs = JSON.parse(pkg.exclusions || "[]"); } catch {}
+  const tourName = document
+    .getElementById("tourNameField")
+    ?.innerText.replace(/✎|\*/g, "")
+    .trim();
+  const location = document
+    .getElementById("locationField")
+    ?.innerText.replace(/✎|\*/g, "")
+    .trim();
+  const priceText = document
+    .getElementById("priceField")
+    ?.innerText.replace(/[₱,✎*]/g, "")
+    .trim();
+  const price = parseFloat(priceText) || 0;
+  const minText = document
+    .getElementById("minBookingsField")
+    ?.innerText.replace(/Minimum number of bookings:|✎|\*/g, "")
+    .trim();
+  const minBookings = parseInt(minText) || 1;
 
-    const card = document.createElement("div");
-    card.className = "tour-card";
+  fd.set("tour_name", tourName);
+  fd.set("location", location);
+  fd.set("price", price);
+  fd.set("min_bookings", minBookings);
 
-    card.innerHTML = `
-      <img src="${image}" alt="${pkg.tour_name}" class="tour-image" />
-      <div class="tour-details">
-        <h3>${pkg.location}</h3>
-        <p class="tour-price">₱${pkg.price ? parseFloat(pkg.price).toLocaleString("en-PH") : "0.00"}</p>
-      </div>
-      <div class="tour-inclusions">
-        ${incs.map(i => `<div class="inclusion-item"><img src='{{ url_for("static", filename="icons/check.png") }}' ><span>${i}</span></div>`).join("")}
-      </div>
-      <div class="tour-exclusions">
-        ${excs.map(e => `<div class="inclusion-item"><img src='{{ url_for("static", filename="icons/x.png") }}' ><span>${e}</span></div>`).join("")}
-      </div>
-      <div class="card-actions">
-        <button onclick="viewKabayan(${pkg.id})">See More</button>
-        <button style="background:#ff5858;" onclick="deleteKabayan(${pkg.id})">Delete</button>
-      </div>
-    `;
-    container.appendChild(card);
+  const overviewEl = document.getElementById("overview");
+  const inclusionsEl = document.getElementById("inclusions");
+  const exclusionsEl = document.getElementById("exclusions");
+  const tourTypeEl = document.getElementById("tourType");
+
+  if (overviewEl) fd.set("overview", overviewEl.value || "");
+  if (inclusionsEl) fd.set("inclusions", getMultiLineFieldValue(inclusionsEl));
+  if (exclusionsEl) fd.set("exclusions", getMultiLineFieldValue(exclusionsEl));
+  if (tourTypeEl) fd.set("tour_type", tourTypeEl.value || "");
+
+  const fileKeys = [
+    { key: "main_image", id: "main_image" },
+    { key: "side_image1", id: "side_image1" },
+    { key: "side_image2", id: "side_image2" },
+    { key: "side_image3", id: "side_image3" },
+  ];
+
+  fileKeys.forEach(({ key, id }) => {
+    const fileEl = document.getElementById(id);
+    if (fileEl?.files?.length > 0) {
+      fd.set(key, fileEl.files[0], fileEl.files[0].name);
+    } else if (fileEl && fileEl.required) {
+      fileEl.reportValidity();
+      throw new Error("Required image missing.");
+    }
   });
+
+  try {
+    const resp = await fetch("/api/add-kabayan", { method: "POST", body: fd });
+    const data = await resp.json();
+
+    if (data.success) {
+      appendTourCard(data.tour);
+      resetForm();
+    } else {
+      alert(data.message || "Failed to save tour.");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred while saving the tour.");
+  }
 }
 
-// ======================= VIEW / DELETE =======================
-function viewKabayan(id) {
-  window.location.href = `add_kabayan.html?id=${id}`;
+// ======================= Reset Form =======================
+function resetForm() {
+  const form = getFormElement();
+  if (!form) return;
+  form.reset();
+
+  const tName = document.getElementById("tourNameField");
+  const loc = document.getElementById("locationField");
+  const price = document.getElementById("priceField");
+  const minBooking = document.getElementById("minBookingsField");
+
+  if (tName) tName.innerText = "Tour Name ✎";
+  if (loc) loc.innerText = "Location ✎";
+  if (price) price.innerText = "₱0.00 ✎";
+  if (minBooking) minBooking.innerText = "Minimum number of bookings: 1 ✎";
+
+  const removePairs = [
+    ["mainImagePreview", "main_image"],
+    ["sideImagePreview1", "side_image1"],
+    ["sideImagePreview2", "side_image2"],
+    ["sideImagePreview3", "side_image3"],
+  ];
+  removePairs.forEach(([imgId, inputId]) => removeImage(imgId, inputId));
 }
 
-function deleteKabayan(id) {
-  if (!confirm("Delete this Kabayan package?")) return;
-  const formData = new FormData();
-  formData.append("id", id);
+// ======================= Fetch Tours =======================
+async function get_tours() {
+  const toursContainer = document.getElementById("tours-container");
+  const emptyPackage = document.getElementById("emptyPackage");
+  if (!toursContainer) return;
 
-  fetch("delete_kabayan.php", { method: "POST", body: formData })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("✅ Kabayan package deleted");
-        get_kabayans();
-      } else {
-        alert("❌ Failed to delete: " + (data.message || "")); 
-      }
-    })
-    .catch(err => {
-      console.error("Delete error:", err);
-      alert("Error deleting package");
+  try {
+    const res = await fetch("/api/get-kabayan");
+    const json = await res.json();
+    const tours = json.tours || json.data || json || [];
+
+    toursContainer.innerHTML = "";
+
+    if (!tours.length) {
+      toursContainer.style.display = "none";
+      if (emptyPackage) emptyPackage.style.display = "block";
+      return;
+    }
+
+    if (emptyPackage) emptyPackage.style.display = "none";
+    toursContainer.style.display = "grid";
+
+    tours.forEach((tour) => appendTourCard(tour));
+  } catch (err) {
+    console.error("Error loading tours:", err);
+    if (emptyPackage) emptyPackage.style.display = "block";
+    toursContainer.style.display = "none";
+  }
+}
+
+// ======================= Initialize =======================
+document.addEventListener("DOMContentLoaded", () => {
+  const form = getFormElement();
+  if (form) {
+    form.noValidate = false;
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      saveForm();
     });
-}
+  }
+  get_tours();
+});

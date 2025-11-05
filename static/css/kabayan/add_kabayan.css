@@ -1,194 +1,506 @@
-.kabayan-page {
-  padding: 50px 20px;
-  text-align: left;
+main { 
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px 40px;
+  box-sizing: border-box;
 }
 
-/* ===== Header Row ===== */
-.header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-  gap: 800px;
-  padding: 30px;
-  margin: 5px 90px;
+.editable {
+  cursor: pointer;
+  font-size: 22px;
+  padding: 0 0 1px 0;
 }
 
-.title-with-icon {
+.editable2 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.editable3 {
+  font-size: 16px;
+  padding: 0px 0 5px 0;
+  width: calc(100% - 20px);
+}
+
+.field label {
+  font-weight: bold;
+  font-size: 16px; 
+  display: block;
+  margin: 10px 0 0;
+}
+
+textarea {
+  padding: 10px;
+  font-size: 14px;
+  width: 100%; 
+  height: auto; 
+  text-align: justify; 
+  box-sizing: border-box; 
+  border: 1px solid #ccc; 
+  resize: vertical; 
+  overflow: auto; 
+}
+
+input, .editable, .editable2 {
+    outline: none !important;
+    border: transparent;
+    box-shadow: none !important;
+}
+
+.image-grid {
   display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.main-image {
+  flex: 3;
+  height: 550px; 
+  position: relative;
+  overflow: hidden; 
+  background-color: #f0f0f0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.main-image img,
+.side-images div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.remove-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%; 
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  cursor: pointer;
+  align-items: center; 
+  justify-content: center; 
+  display: flex; 
+  font-size: 20px; 
+}
+
+.main-image input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer; 
+}
+
+.side-images {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
-.title-with-icon img {
-  width: 40px;
-  height: 40px;
+.side-images div {
+  height: 177px; 
+  position: relative;
+  overflow: hidden; 
+  background-color: #f0f0f0; 
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
 }
 
-/* ===== Empty State ===== */
-.empty-package {
-  background-color: #f1f1f1;
-  width: 1000px;
-  height: 335px;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(82, 82, 82, 0.2);
+.side-images div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  display: none; 
+}
+
+.side-images div .remove-image {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px; 
+  height: 30px;
+  border-radius: 50%; 
+  background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  align-items: center; 
+  justify-content: center; 
+  display: flex; 
+  font-size: 20px;
+}
+
+.side-images div input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; 
+  cursor: pointer; 
+}
+
+.file-input-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin: 0 auto 60px;
-  text-align: center;
+  z-index: 1;
 }
 
-.pin2-icon {
-  width: 90px;
+.file-label {
+  border: 1px solid ;
+  padding: 6px 12px;
+  font-size: 14px;
+  text-align: center;
+  background-color: #fff;
+  opacity: 80%;
+  pointer-events: none;
+}
+
+/* Center the upload button on side images */
+.side-images div .file-input-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.inc-section {
+  margin: 12px 0;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.price {
+  font-weight: bold;
+  color: #0077cc;
+}
+
+.inclusions-list {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
-.create-package-btn {
-  display: inline-block;
-  margin-top: 25px;
-  padding: 10px 40px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.create-package-btn:hover {
-  background-color: #0056b3;
-}
-
-/* Filters & Add Button */
-.filter-section select {
-  padding: 3px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.add-package-btn {
-  padding: 3px 20px;
-  background-color: #fff;
-  color: rgb(0, 0, 0);
-  border: 1px solid #ccc;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
-}
-
-.add-package-btn:hover {
-  background-color: #f4f4f4;
-}
-
-/* Container for kabayan previews */
-#kabayanToursContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 50px;
-  padding: 20px;
-  justify-content: center;
-}
-
-/* Single Kabayan Card */
-.tour-card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  width: 250px;
-  height: 380px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Kabayan Image */
-.tour-card .tour-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px 10px 0 0;
-}
-
-/* Kabayan Details */
-.tour-details {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  position: relative;
-}
-
-/* Location + Price row */
-.tour-details h3,
-.tour-details p.tour-price {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.tour-details h3 {
-  float: left;
-  font-weight: 800;
-  font-size: 16px;
-  color: #091d46;
-}
-
-.tour-details p.tour-price {
-  float: right;
-  color: #008EC4;
-  font-size: 13px;
-  font-weight: 400;
-  margin-left: 10px;
-}
-
-.tour-details::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Inclusions: 2 columns */
-.tour-inclusions {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.inclusion-item {
+.inclusions-list label {
   display: flex;
   align-items: center;
-  font-size: 11px;
-  gap: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
-.inclusion-item img {
-  width: 13px;
-  height: 13px;
+.inclusions-list input[type="checkbox"] {
+  margin-right: 10px;
 }
 
-/* See More Button */
-.see-more-btn {
-  display: block;
-  margin-top: auto;
-  margin-bottom: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 5px 40px;
-  background-color: #008EC4;
+.inclusions-list img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.save-btn {
+  background: #00b4d8;
   color: #fff;
+  padding: 10px 40px;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: 500;
-  text-align: center;
+  margin-top: 20px;
 }
 
-.see-more-btn:hover {
-  background-color: #091d46;
+.save-btn:hover {
+  background: #091D46;
+}
+
+.pickup-details {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: space-between; 
+  gap: 30px;                      
+}
+
+.pickup-details strong {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.pickup-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.pickup-info {
+  margin-top: 30px;
+}
+
+.separator {
+  width: 2px; 
+  background-color: #ccc; 
+  margin: 0 15px; 
+}
+
+.pickup-column {
+  display: flex;                  
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+}
+
+.pickup-column .text-container {
+  width: 420px;
+  max-width: 500px; 
+}
+
+.pickup-column strong,
+.pickup-column p,
+.pickup-column a {
+  display: block;
+}
+
+/* Tour type dropdown */
+#tourType {
+  width: 30%;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+#tourType:focus {
+  outline: none;
+  border-color: #0077cc;
+  box-shadow: 0 0 5px rgba(0, 119, 204, 0.5);
+}
+
+#tourType option[disabled] {
+  color: #888;
+}
+
+/* Location and Tour Type in one line */
+.location-tour {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Check In and Out */
+.check-dates {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.check-dates label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.check-dates input {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+/* Hotel */
+.hotel-room {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.hotel-room label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.hotel-room input {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+/* Inclusion */
+.inc-section.side-by-side {
+  display: flex;
+  gap: 40px; /* space between columns */
+  margin-top: 15px;
+}
+
+.package-col {
+  flex: 1; /* equal width */
+}
+
+.inclusions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inclusions-list label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.inclusions-list img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* Meeting and Pickup textarea width */
+.pickup-details .pickup-column div {
+    flex: 1 1 0; /* make the text container take more space */
+}
+
+.pickup-details .pickup-column textarea {
+    width: 100%; /* make the textarea fill the container */
+    box-sizing: border-box;
+}
+
+#itinerary {
+  padding: 10px;
+  font-size: 14px;
+  width: 100%;
+  height: 200px; /* larger height */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  box-sizing: border-box;
+  text-align: justify;
+}
+
+.required {
+  color: red;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  padding: 15px 20px;
+  border-radius: 8px;
   color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Animation when showing */
+.popup.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Success (Green) */
+.popup.success {
+  background: #4caf50; /* green */
+  border-left: 5px solid #2e7d32;
+}
+
+/* Error (Red) */
+.popup.error {
+  background: #f44336; /* red */
+  border-left: 5px solid #b71c1c;
+}
+
+/* Optional: pop-in keyframe for smoother effect */
+@keyframes popupIn {
+  0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+  80% { transform: translateY(5px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.popup.show {
+  animation: popupIn 0.35s ease forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  main {
+    padding: 10px 20px; 
+  }
+
+  .save-btn {
+    padding: 8px 20px;
+  }
+
+  .location-tour {
+    flex-direction: column;
+  }
+
+  .location-tour input[type="text"],
+  #tourType {
+    width: 100%;
+  }
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 600px) {
+  .inc-section.side-by-side {
+    flex-direction: column;
+  }
 }
