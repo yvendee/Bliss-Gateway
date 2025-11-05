@@ -1,88 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Itinerary Packages | Bliss Gateways' Travel Management System</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Itinerary Builder | Bliss Gateways' Travel Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
-  <link rel="stylesheet" href='{{ url_for("static", filename="css/itinerary/itinerary.css") }}'>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/style.css") }}'>
+    <link rel="stylesheet" href='{{ url_for("static", filename="css/itinerary/itinerary.css") }}'>
 </head>
 <body>
-  <div id="header-container"></div>
+    <div id="header-container"></div>
 
-  <div id="kabayanPopup" class="popup"></div>
+    <main class="wrap">
+        <div class="title-container">
+            <img src='{{ url_for("static", filename="icons/itinerary.png") }}'  alt="Itinerary Icon" class="title-icon">
+            <h1>Itinerary Builder</h1>
+        </div>
+        <p>Plan your trip! Click on destinations on the left to add them to your plan</p>
 
-  <div class="header-row">
-    <div class="title-with-icon">
-      <img src='{{ url_for("static", filename="icons/itinerary.png") }}' alt="Itinerary Packages Icon">
-      <h2>Itinerary Packages</h2>
+        <div class="panel" id="preferences">
+            <h4>Preferences</h4>
+            <div class="grid-3">
+                <div>
+                    <div class="field">
+                        <label for="destination">Destination</label>
+                        <input type="text" id="destination" placeholder="Where would you like to go?" />
+                    </div>
+                    <div class="flex">
+                        <div class="field" style="flex:1">
+                            <label for="dateFrom">Travel Dates (from)</label>
+                            <input type="date" id="dateFrom">
+                        </div>
+                        <div class="field" style="flex:1">
+                            <label for="dateTo">to</label>
+                            <input type="date" id="dateTo">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="field">
+                        <label for="budget">Budget Range</label>
+                        <select id="budget">
+                            <option value="">Choose your budget</option>
+                            <option>₱5,000 - ₱10,000</option>
+                            <option>₱10,000 - ₱20,000</option>
+                            <option>₱20,000 - ₱30,000</option>
+                            <option>₱30,000 - ₱40,000</option>
+                            <option>₱40,000 - ₱50,000</option>
+                            <option>₱50,000 - ₱100,000</option>
+                            <option>₱100,000+</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Travel Style</label>
+                        <div class="chips">
+                            <label class="chip"><input type="checkbox" value="Adventure"> Adventure</label>
+                            <label class="chip"><input type="checkbox" value="Cultural"> Cultural</label>
+                            <label class="chip"><input type="checkbox" value="Relaxation"> Relaxation</label>
+                            <label class="chip"><input type="checkbox" value="Luxury"> Luxury</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="field">
+                        <label>Dietary Needs</label>
+                        <div class="chips">
+                            <label class="chip"><input type="checkbox" value="Vegetarian"> Vegetarian</label>
+                            <label class="chip"><input type="checkbox" value="Halal"> Halal</label>
+                            <label class="chip"><input type="checkbox" value="Kosher"> Kosher</label>
+                            <label class="chip"><input type="checkbox" value="Gluten-Free"> Gluten-Free</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="mobility">Mobility Access</label>
+                        <select id="mobility">
+                            <option>No Special Requirements</option>
+                            <option>Wheelchair Accessible</option>
+                            <option>Limited Mobility Support</option>
+                            <option>Elderly Friendly</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cols"> 
+            <!-- Left: Activity Library -->
+            <div class="lib" id="results">
+                <div class="activity-toolbar">          
+                
+                <!-- Add Activity dropdown -->
+                <select id="btnAddActivity" class="btn">
+                    <option value="" disabled selected>+ Add Activity</option>
+                    <option value="flights">Flights</option>
+                    <option value="hotels">Hotels</option>
+                    <option value="restaurants">Restaurants</option>
+                    <option value="tours">Tours</option>
+                </select>
+
+                <!-- Tours Modal -->
+                <div id="modalTours" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="document.getElementById('modalTours').style.display='none'">&times;</span>
+                        <h3>✎ Tour Details</h3>
+                        <p>(Placeholder)</p>
+                    </div>
+                </div>
+
+                <!-- Restaurants Modal -->
+                <div id="modalRestaurants" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="document.getElementById('modalRestaurants').style.display='none'">&times;</span>
+                        <h3>✎ Restaurant Details</h3>
+                        <p>(Placeholder)</p>
+                    </div>
+                </div>
+                
+                <!-- Filter dropdown -->
+                <select id="activityType">
+                    <option value="">All Activities</option>
+                    <option value="flights">Flights</option>
+                    <option value="hotels">Hotels</option>
+                    <option value="restaurants">Restaurants</option>
+                    <option value="tours">Tours</option>
+                </select>
+                </div>
+
+                <div id="activity-results"></div>
+                <div class="lib-empty" id="resultsEmpty">
+                Please search a destination to get results.
+                </div>
+            </div> 
+
+            <!-- Right: Itinerary -->
+            <div class="days">
+                <div class="itinerary-header">
+                    <h2 class="itinerary-title">Your Itinerary</h2>
+                    <div class="itinerary-actions">
+                        <button class="btn" id="btnAddDay">Add Day</button>
+                        <button class="btn" id="btnSave">Save</button>
+                        <button class="btn" id="btnBook">Book</button>
+                    </div>
+                </div>
+                <div id="daysContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="activityModal" class="modal">
+        <div class="modal-box">
+            <span class="close" id="closeModal">&times;</span>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add Activity</h2>
+                    <select id="activityCategory" class="category-dropdown">
+                        <option value="">Select Category</option>
+                        <option value="flights">Flights</option>
+                        <option value="hotels">Hotels</option>
+                        <option value="restaurants">Restaurants</option>
+                        <option value="tours">Tours</option>
+                    </select>
+                </div>
+                <div class="main-image">
+                    <img id="mainImage" alt="Main Image" />
+                    <button class="remove-image" onclick="removeImage('mainImage', 'mainImageInput')">✖</button>
+                    <label for="mainImageInput" class="file-label">Upload Image</label>
+                    <input type="file" id="mainImageInput" accept="image/*" onchange="previewImage(event, 'mainImage', 'mainImageInput')" />
+                </div>
+                <div class="modal-details">
+                    <div class="section flex-between">
+                        <h2 id="modalTitle" class="editable" onclick="makeEditable(this)">✎ Tour Name</h2>
+                        <span id="modalPrice" class="price editable" onclick="makeEditable(this)">✎ ₱00.00</span>
+                    </div>
+                    <div class="section flex-between duration-row">
+                        <span id="modalDuration" class="duration editable" onclick="makeEditable(this)">✎ Duration</span>
+                        <span class="per-person">per person</span>
+                    </div>
+                    <div class="field">
+                        <label for="location" class="location-label">Location</label>
+                        <input type="text" id="location" placeholder="Enter location address">
+                    </div>
+                    <label for="activityDescription">Description</label>
+                    <textarea id="activityDescription" placeholder="Write details here..."></textarea>
+                    <button class="btn publish-btn" type="button" id="publishBtn">Publish</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="filter-section">
-      <select id="kabayanFlightFilter" onchange="filterKabayanPackages()">
-        <option value="all">All</option>
-        <option value="international">International Flights</option>
-        <option value="domestic">Domestic Flights</option>
-      </select>
-      <button class="add-package-btn" onclick="window.location.href='/add-itinerary'">+ Add New Package</button>
+
+    <div id="activityConfirmPopup">
+        <p>Are you sure you want to delete this activity?</p>
+        <button id="confirmDeleteActivity">Delete</button>
+        <button id="cancelDeleteActivity">Cancel</button>
     </div>
-  </div>
 
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="/">Home</a>
+                <a href="/services">Services</a>
+                <a href="/about">About Us</a>
+            </div>
+            <div class="footer-column">
+                <h3>Business Hours</h3>
+                <p>Monday - Saturday</p>
+                <p>8:00 AM to 5:00 PM</p>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>0912 988 7893</p>
+                <p>blissgatewaysph@gmail.com</p>
+                <p>San Nicolas, Baao, Camarines Sur</p>
+                <p>4432 Philippines</p>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Us</h3>
+                <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
+                <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
+                <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
+            </div>
+        </div>
+        <hr class="footer-separator" />
+        <div class="footer-bottom">
+            <p>© Bliss Gateways Travel and Tours 2025</p>
+            <p>Developed by Systematic Thinkers</p>
+        </div>
+    </footer>
 
-  <div class="empty-package" id="emptyKabayanPackage">
-    <img src='{{ url_for("static", filename="icons/pin2.png") }}'  alt="Pin Icon" class="pin2-icon" />
-    <h3>No Itinerary Packages Yet</h3>
-    <p>Start creating amazing Itinerary packages for your guests.</p>
-    <a href="/add-itinerary" class="create-package-btn">+ Create Your First Itinerary Package</a>
-  </div>
-
-  <!-- Kabayan grid -->
-  <div class="tours-grid" id="kabayanToursContainer" style="display: none;"></div>
-  <!-- JS will populate kabayan cards here -->
-
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-column">
-        <h3>Quick Links</h3>
-        <a href="/">Home</a>
-        <a href="/services">Services</a>
-        <a href="/about">About Us</a>
-      </div>
-      <div class="footer-column">
-        <h3>Business Hours</h3>
-        <p>Monday - Saturday</p>
-        <p>8:00 AM to 5:00 PM</p>
-      </div>
-      <div class="footer-column">
-        <h3>Contact Us</h3>
-        <p>0912 988 7893</p>
-        <p>blissgatewaysph@gmail.com</p>
-        <p>San Nicolas, Baao, Camarines Sur</p>
-        <p>4432 Philippines</p>
-      </div>
-      <div class="footer-column">
-        <h3>Connect With Us</h3>
-        <a href="https://www.facebook.com/blissgatewaysph">facebook.com/blissgatewaysph</a>
-        <a href="https://www.instagram.com/blissgateways_ph">instagram.com/blissgateways_ph</a>
-        <a href="https://www.tiktok.com/@blissgateways">tiktok.com/@blissgateways_ph</a>
-      </div>
-    </div>
-    <hr class="footer-separator" />
-    <div class="footer-bottom">
-      <p>© Bliss Gateways Travel and Tours 2025</p>
-      <p>Developed by Systematic Thinkers</p>
-    </div>
-  </footer>
-
-
-  <script src='{{ url_for("static", filename="js/header_load.js") }}'>
-  </script>
-  <script src='{{ url_for("static", filename="js/itinerary/itinerary.js") }}'>
-  </script>
-  
+    <!-- Scripts -->
+    <script src='{{ url_for("static", filename="js/header_load.js") }}'>
+    </script>
+    <script src='{{ url_for("static", filename="js/itinerary/itinerary.js") }}'>
+    </script>
 </body>
 </html>
